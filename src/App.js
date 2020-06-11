@@ -1,11 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import typescript from './components/typescript'
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+      <typescript menu="xxx"/>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
