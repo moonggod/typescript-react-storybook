@@ -71,7 +71,7 @@ function RenderItems(props:RenderItemsProps) {
   })
 }
 
-export const MList: FunctionComponent = () => {
+export const BaseList: FunctionComponent = () => {
   const listData = [{
     title: 'Product Name',
     desc: 'Product Description',
