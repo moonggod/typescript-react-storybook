@@ -1,5 +1,5 @@
 import React from 'react';
-// import { action } from '@storybook/addon-actions';
+import Provider from '../Provider'
 import { BaseList } from '../components/MList/BaseList';
 import { CardList } from '../components/MList/CardList';
 
@@ -7,6 +7,6 @@ export default {
   title: 'MList'
 };
 
-export const _BaseList = () => <BaseList/>;
+export const _BaseList = () => <Provider><BaseList/></Provider>;
 
-export const _CardList = () => <CardList/>;
+export const _CardList = () => <Provider><CardList/></Provider>;
