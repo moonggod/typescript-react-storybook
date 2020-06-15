@@ -8,6 +8,16 @@ export const _spec = {
     sold_out: '',
     off_shelf: '',
     size: ''
-  }
+  },
   /** TODO:sync favorites # */
+  /** TODO:sync message */
+  my_message: {
+    _self: '',
+    title: '',
+    create_time: '',
+    order: '',
+    status: '',
+    deal_with: '',
+  },
+  /** TODO:sync message # */
 }

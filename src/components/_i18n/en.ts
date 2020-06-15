@@ -10,6 +10,16 @@ export const en: typeof _spec = {
     sold_out: 'Sold out',
     off_shelf: 'Off shelf',
     size: 'Size'
-  }
+  },
   /** TODO:sync favorites # */
+  /** TODO:sync message */
+  my_message: {
+    _self: '',
+    title: '',
+    create_time: '',
+    order: '',
+    status: '',
+    deal_with: '',
+  },
+  /** TODO:sync message # */
 }

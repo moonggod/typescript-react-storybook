@@ -1,10 +1,9 @@
-import React from 'react';
-// import { action } from '@storybook/addon-actions';
-import { MForm } from '../components/MForm';
+import React from 'react'
+// import { action } from '@storybook/addon-actions'
+import { MForm } from '../components/MForm'
 
 export default {
-  title: 'MForm',
-  component: MForm,
-};
+  title: 'MForm'
+}
 
-export const Base = () => <MForm title="xxxxx"/>;
+export const Base = () => <MForm title="xxxxx"/>
