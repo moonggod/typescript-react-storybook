@@ -19,48 +19,54 @@ const useStyles = makeStyles((theme:Theme) => ({
   }
 }));
 
-export function RenderItems(messageList:GetMessageListRes) {
+export function RenderItems(props:{messageList:GetMessageListRes}) {
   const classes = useStyles()
   const preventDefault = (event:any) => event.preventDefault()
-  return messageList.messageList.map((item:Message) => {
-    const _classTitle = item.status === 0 ? classes.fontWeight : ''
-    return (
-      <ListItem className={classes.listItem}  key={item.id}>
-        <Grid container spacing={3}>
-          <Fragment>
-            <Grid item xs={2}>
-              <Box className={_classTitle}>2020/10/3 22:30:10</Box>
+  return (
+    <Box>
+    {
+      props.messageList.messageList.map((item:Message) => {
+        const _classTitle = item.status === 0 ? classes.fontWeight : ''
+        return (
+          <ListItem className={classes.listItem}  key={item.id}>
+            <Grid container spacing={3}>
+              <Fragment>
+                <Grid item xs={2}>
+                  <Box className={_classTitle}>2020/10/3 22:30:10</Box>
+                </Grid>
+                <Grid item xs={3}>
+                  <Box className={_classTitle}>Designer:  Gucci</Box>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box className={_classTitle}>User:&nbsp;wenpeng</Box>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box className={_classTitle}>
+                    Order:&nbsp;<Link href="#" onClick={preventDefault}>12121212</Link>
+                  </Box>
+                </Grid>
+                <Grid item xs={3}>
+                  <Box className={_classTitle}>Service: Service01</Box>
+                </Grid>
+              </Fragment>
+              <Fragment>
+                <Grid item xs={7}>
+                  <Box>Service01:&nbsp;请您稍后，我询问一下供应商</Box>
+                </Grid>
+                <Grid item xs={3}>
+                <Button variant="outlined" color="primary">点击进入</Button>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box>未处理</Box>
+                </Grid>
+              </Fragment>
             </Grid>
-            <Grid item xs={3}>
-              <Box className={_classTitle}>Designer:  Gucci</Box>
-            </Grid>
-            <Grid item xs={2}>
-              <Box className={_classTitle}>User:&nbsp;wenpeng</Box>
-            </Grid>
-            <Grid item xs={2}>
-              <Box className={_classTitle}>
-                Order:&nbsp;<Link href="#" onClick={preventDefault}>12121212</Link>
-              </Box>
-            </Grid>
-            <Grid item xs={3}>
-              <Box className={_classTitle}>Service: Service01</Box>
-            </Grid>
-          </Fragment>
-          <Fragment>
-            <Grid item xs={7}>
-              <Box>Service01:&nbsp;请您稍后，我询问一下供应商</Box>
-            </Grid>
-            <Grid item xs={3}>
-            <Button variant="outlined" color="primary">点击进入</Button>
-            </Grid>
-            <Grid item xs={2}>
-              <Box>未处理</Box>
-            </Grid>
-          </Fragment>
-        </Grid>
-      </ListItem>
-    )
-  })
+          </ListItem>
+        )
+      })
+    }
+    </Box>
+  )
 }
 
 const connector = connect(
@@ -98,7 +104,7 @@ export function _MessageList({
     <Box>
       <List>
         <ListSubheader>Message List</ListSubheader>
-        {RenderItems(messageList)}
+        <RenderItems messageList={messageList}/>
       </List>
       <Pagination count={10} variant="outlined" shape="rounded" onChange={handleSwitch} />
     </Box>
