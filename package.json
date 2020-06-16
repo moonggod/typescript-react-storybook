@@ -32,13 +32,9 @@
     "routing-controllers": "^0.9.0-alpha.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "storybook:newMock": "cross-env MOCK=api concurrently \"yarn run mock:newAPI\" \"yarn run storybook\"",
+    "storybook:newMock": "cross-env MOCK=api concurrently --raw \"yarn run mock:newAPI\" \"yarn run storybook\"",
     "mock:newAPI": "env-cmd -f .env.development ts-node-dev --project src/mock/tsconfig.json --no-notify src/mock/main.ts"
   },
   "eslintConfig": {
@@ -72,6 +68,7 @@
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
+    "http-proxy-middleware": "^1.0.4",
     "prettier": "^2.0.5",
     "react-docgen-typescript-loader": "^3.7.2",
     "ts-loader": "^7.0.5",

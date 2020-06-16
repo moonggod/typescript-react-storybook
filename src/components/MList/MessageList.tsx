@@ -88,8 +88,8 @@ export function _MessageList({
   messageList,
   getMessageList
 }: Props) {
+  const curCustomerId = 777 // TODO: where to get the current customer ID?
   useEffect(() => {
-    const curCustomerId = 777 // TODO: where to get the current customer ID?
     getMessageList(curCustomerId)
   }, [getMessageList])
 
@@ -98,7 +98,7 @@ export function _MessageList({
   }
 
   const handleSwitch = (event:any,value:number) => {
-    console.log(value)
+    getMessageList(curCustomerId)
   }
   return (
     <Box>
