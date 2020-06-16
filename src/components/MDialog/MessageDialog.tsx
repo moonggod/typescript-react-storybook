@@ -10,9 +10,9 @@ import {
   Avatar,
   ListItemText,
   Typography,
-  IconButton,
+  TextareaAutosize,
+  Button,
 } from '@material-ui/core'
-import { InsertEmoticon, AddCircleOutline } from '@material-ui/icons'
 // import { useTranslation } from 'react-i18next'
 // import { I18N, I18N_NS } from '../_i18n'
 import {
@@ -45,6 +45,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1, 'auto')
   },
   inputWindow: {
+    margin: theme.spacing(2, 0),
+    padding: theme.spacing(3, 1),
+    borderTop: '1px solid #ddd'
   },
   inline: {
     display: 'inline',
@@ -55,6 +58,15 @@ const useStyles = makeStyles(theme => ({
   date: {
     color:'#999',
     fontSize: '14px'
+  },
+  textarea: {
+    width: '80%',
+    height: '200px',
+    marginBottom: theme.spacing(2)
+  },
+  inputBtn: {
+    marginRight: theme.spacing(2),
+    display: 'inline'
   }
 }))
 
@@ -148,19 +160,26 @@ export const MessageDialog: FunctionComponent = () => {
         <RenderItems listData={listData} />
       </Box>
       <Box display="flex" className={classes.inputWindow}>
-        <Box>
-          <input accept="image/*" className={classes.hide} id="icon-button-file" type="file" />
-          <label htmlFor="icon-button-file">
-            <IconButton color="primary" aria-label="upload picture" component="span">
-              <AddCircleOutline />
-            </IconButton>
-          </label>
-        </Box>
-        <Box>
-          <IconButton color="primary" component="span">
-            <InsertEmoticon />
-          </IconButton>
-        </Box>
+        <Grid container>
+          <Grid item xs={12}>
+            <TextareaAutosize
+              className={classes.textarea}
+              rows={5}
+              placeholder="请输入消息"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Box className={classes.inputBtn}>
+              <input accept="image/*" className={classes.hide} id="icon-button-file" type="file" />
+              <label htmlFor="icon-button-file">
+                <Button variant="contained" color="primary">上传图片</Button>
+              </label>
+            </Box>
+            <Button className={classes.inputBtn} variant="contained" color="primary">发送消息用户处理</Button>
+            <Button className={classes.inputBtn} variant="contained" color="primary">发送消息继续处理</Button>
+            <Button className={classes.inputBtn} variant="contained" color="primary">关闭消息</Button>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   )
