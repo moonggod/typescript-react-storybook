@@ -14,6 +14,7 @@ export class MListController
     M_LIST_ROUTES.getMessageList.path
   )
   getMessageList(@Params() params: GetMessageListReq): GetMessageListRes {
+    console.log(params)
     return GetMessageListResMock.build()
   }
 }
