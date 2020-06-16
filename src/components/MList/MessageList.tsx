@@ -19,10 +19,10 @@ const useStyles = makeStyles((theme:Theme) => ({
   }
 }));
 
-export function RenderItems(messageList:GetMessageListRes['messageList']) {
+export function RenderItems(messageList:GetMessageListRes) {
   const classes = useStyles()
   const preventDefault = (event:any) => event.preventDefault()
-  return messageList.map((item:Message) => {
+  return messageList.messageList.map((item:Message) => {
     const _classTitle = item.status === 0 ? classes.fontWeight : ''
     return (
       <ListItem className={classes.listItem}  key={item.id}>

@@ -10,5 +10,7 @@ export const MessageMock = Factory.Sync.makeFactory<Message>({
   user: Factory.each(() => chance.letter()),
   order: Factory.each(() => chance.letter()),
   service: Factory.each(() => chance.letter()),
-  status: Factory.each(() => chance.letter())
+  status: Factory.each(() => chance.integer()),
+  id: Factory.each(() => chance.integer())
 })
+

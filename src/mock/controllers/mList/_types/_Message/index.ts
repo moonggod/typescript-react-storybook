@@ -29,5 +29,5 @@ export class Message {
   status: number = 0
 
   @IsInt()
-  id: string = ''
+  id: number = 0
 }
