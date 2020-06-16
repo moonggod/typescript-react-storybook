@@ -8,6 +8,7 @@ import {
 import { api } from '../utils/api'
 
 import favoritesSlice from './slices/favoritesSlice' // TODO:sync favorites
+import {MListSlice} from '../components/_store/MListSlice' // TODO: messageList
 import axiosMiddleware from 'redux-axios-middleware'
 
 const middleware = [
@@ -16,7 +17,8 @@ const middleware = [
 ]
 
 const rootReducer = combineReducers({
-  favorites: favoritesSlice // TODO:sync favorites
+  favorites: favoritesSlice, // TODO:sync favorites
+  [MListSlice.name]: MListSlice.reducer, // TODO:sync favorites
 })
 
 export const store = configureStore({
