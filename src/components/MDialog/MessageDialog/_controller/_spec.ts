@@ -1,11 +1,7 @@
 import { CreateControllerSpec, RequestMethod } from '../../types'
 
 export const M_LIST_ROUTES = {
-  getMessageList: {
-    method: RequestMethod.get,
-    path: '/customers/getMessageList/:customerId'
-  },
-  getDialogMessage: {
+  getDialogMessageList: {
     method: RequestMethod.get,
     path: '/customers/getDialogMessage/:customerId'
   },

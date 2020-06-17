@@ -1,11 +1,12 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, List, ListItem, Grid, ListSubheader, Button, Link } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
-import { getMessageList } from '../_store/MListSlice'
-import { RootState } from '../../app/store'
-import { Message, GetMessageListRes } from '../../mock/controllers/mList/_types'
+import { getMessageList } from './_store/messageListSlice'
+import { RootState } from '../../../app/store'
+// import { MessageDialog } from '../../MDialog/MessageDialog'
+import { Message, GetMessageListRes } from './_controller/_types'
 
 const useStyles = makeStyles((theme:Theme) => ({
   listItem: {
@@ -22,6 +23,13 @@ const useStyles = makeStyles((theme:Theme) => ({
 export function RenderItems(props:{messageList:GetMessageListRes}) {
   const classes = useStyles()
   const preventDefault = (event:any) => event.preventDefault()
+  // const [open, setOpen] = useState(false)
+  const [id, setId] = useState(0)
+
+  function handleMe (id: Message['id']) {
+    // setOpen(true)
+    setId(id)
+  }
   return (
     <Box>
     {
@@ -32,32 +40,41 @@ export function RenderItems(props:{messageList:GetMessageListRes}) {
             <Grid container spacing={3}>
               <Fragment>
                 <Grid item xs={2}>
-                  <Box className={_classTitle}>2020/10/3 22:30:10</Box>
+                  <Box className={_classTitle}>{item.time}</Box>
                 </Grid>
                 <Grid item xs={3}>
-                  <Box className={_classTitle}>Designer:  Gucci</Box>
+                  <Box className={_classTitle}>Designer:&nbsp;{item.designer}</Box>
                 </Grid>
                 <Grid item xs={2}>
-                  <Box className={_classTitle}>User:&nbsp;wenpeng</Box>
+                  <Box className={_classTitle}>User:&nbsp;{item.user}</Box>
                 </Grid>
                 <Grid item xs={2}>
                   <Box className={_classTitle}>
-                    Order:&nbsp;<Link href="#" onClick={preventDefault}>12121212</Link>
+                    Order:&nbsp;<Link href="#" onClick={preventDefault}>{item.order}</Link>
                   </Box>
                 </Grid>
                 <Grid item xs={3}>
-                  <Box className={_classTitle}>Service: Service01</Box>
+                   <Box className={_classTitle}>Service:&nbsp;{item.service}</Box>
                 </Grid>
               </Fragment>
               <Fragment>
                 <Grid item xs={7}>
-                  <Box>Service01:&nbsp;请您稍后，我询问一下供应商</Box>
+                  <Box>{item.service}:&nbsp;{item.content}</Box>
                 </Grid>
                 <Grid item xs={3}>
-                <Button variant="outlined" color="primary">点击进入</Button>
+                  {
+                    item.status === 0 ? 
+                    <Button variant="outlined" color="primary" onClick={() => handleMe(item.id)}>点击进入</Button> : 
+                    null
+                  }
                 </Grid>
                 <Grid item xs={2}>
-                  <Box>未处理</Box>
+                  <Box>
+                    {
+                      item.status === 0 ? '未处理' : 
+                      (item.status === 1 ? '已处理' : '已关闭')
+                    }
+                  </Box>
                 </Grid>
               </Fragment>
             </Grid>
@@ -65,6 +82,7 @@ export function RenderItems(props:{messageList:GetMessageListRes}) {
         )
       })
     }
+    {/* <MessageDialog open={open} id={id}/> */}
     </Box>
   )
 }
@@ -98,6 +116,7 @@ export function _MessageList({
   }
 
   const handleSwitch = (event:any,value:number) => {
+    console.log(value)
     getMessageList(curCustomerId)
   }
   return (

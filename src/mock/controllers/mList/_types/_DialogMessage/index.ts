@@ -6,26 +6,23 @@ import {
   IsDate,
 } from 'class-validator'
 // import { IsSameWith } from './IsSameWith'
-export class Message {
+export class DialogMessage {
   @IsNotEmpty()
   @IsString()
-  designer: string = ''
+  name: string = ''
 
   @IsNotEmpty()
   @IsString()
   @IsDate()
   time: (string | Date) = ''
 
-  @IsOptional()
-  @IsString()
-  user: string = ''
-
-  @IsInt()
-  order: number = 200000
-
   @IsNotEmpty()
   @IsString()
-  service: string = ''
+  avatar: string = ''
+
+  @IsNotEmpty()
+  @IsInt()
+  type: number = 0
 
   @IsNotEmpty()
   @IsString()
@@ -34,6 +31,7 @@ export class Message {
   @IsInt()
   status: number = 0
 
+  @IsOptional()
   @IsInt()
   id: number = 0
 }

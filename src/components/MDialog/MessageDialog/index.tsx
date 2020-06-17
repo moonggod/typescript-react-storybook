@@ -1,6 +1,5 @@
-/** TODO:sync favorites file */
-import React, { FunctionComponent, useEffect, Fragment } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { Fragment, useState } from 'react'
+// import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   Box,
@@ -12,12 +11,11 @@ import {
   Typography,
   TextareaAutosize,
   Button,
+  Dialog,
+  DialogTitle,
 } from '@material-ui/core'
 // import { useTranslation } from 'react-i18next'
 // import { I18N, I18N_NS } from '../_i18n'
-import {
-  fetchFavorites,
-} from '../../app/slices/favoritesSlice'
 
 const useStyles = makeStyles(theme => ({
   blank: {},
@@ -120,18 +118,11 @@ function RenderItems(props:RenderItemsProps) {
   })
 }
 
-export const MessageDialog: FunctionComponent = () => {
+export const MessageDialog = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   // let favorites = useSelector(selectFavorites)
-  useEffect(() => {
-    dispatch(
-      fetchFavorites({
-        url: 'http://localhost:5005/favoriteslist', // TODO:need to change to true api url
-      })
-    )
-    console.log('mount it!')
-  }, [dispatch])
+  const [open, setOpen] = useState(false)
   const listData = [{
     name: 'Tom',
     content: 'Happiness looks different for everyone. For you, maybe it’s being at peace with who you are. Or having a secure network of friends who accept you unconditionally. Or the freedom to pursue your deepest dreams.',
@@ -139,22 +130,13 @@ export const MessageDialog: FunctionComponent = () => {
     id: 1,
     type: 1,
     time: '2020/06/16'
-  },{
-    name: 'Lili',
-    content: 'Well, good habits are deeply engrained, too. Why not work on making positive habits part of your routine?',
-    avatar: require('./avatar_B.jpg'),
-    id: 2,
-    type: 2,
-    time: '2020/06/16'
-  },{
-    name: 'Tom',
-    content: 'That doesn’t mean you have to go around with a fake smile plastered on your face all the time. But the next time you find yourself feeling low, crack a smile and see what happens. Or try starting each morning by smiling at yourself in the mirror.',
-    avatar: require('./avatar_A.jpg'),
-    id: 3,
-    type: 1,
-    time: '2020/06/16'
-  },]
+  }]
+  function handleClose () {
+    setOpen(false)
+  }
   return (
+    <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+      <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
     <Box>
       <Box className={classes.contentWindow}>
         <RenderItems listData={listData} />
@@ -182,5 +164,6 @@ export const MessageDialog: FunctionComponent = () => {
         </Grid>
       </Box>
     </Box>
+    </Dialog>
   )
 }
