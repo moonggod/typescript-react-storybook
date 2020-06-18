@@ -13,7 +13,7 @@ export class MessageDialogController
       M_DIALOG_ROUTES.getDialogMessageList.method,
       M_DIALOG_ROUTES.getDialogMessageList.path
     )
-    getDialogMessage(@Params() params: GetDialogMessageListReq): GetDialogMessageListRes {
+    getDialogMessageList(@Params() params: GetDialogMessageListReq): GetDialogMessageListRes {
       console.log(params)
       return GetDialogMessageListResMock.build()
     }
