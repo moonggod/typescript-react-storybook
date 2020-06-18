@@ -22,4 +22,13 @@ export const zh: typeof _spec = {
     deal_with: '马上处理',
   },
   /** TODO:sync message # */
+  /** TODO:sync NotificationList */
+  notification_list: {
+    _self: '消息通知',
+    system: '系统',
+    gc: 'G-CLUB',
+    gp: 'G_PAY',
+    show_more: '展示更多'
+  },
+  /** TODO:sync NotificationList # */
 }

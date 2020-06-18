@@ -22,4 +22,13 @@ export const en: typeof _spec = {
     deal_with: '',
   },
   /** TODO:sync message # */
+  /** TODO:sync NotificationList */
+  notification_list: {
+    _self: 'NOTIFICATIONS',
+    system: 'SYSTEM',
+    gc: 'G-CLUB',
+    gp: 'G_PAY',
+    show_more: 'SHOW MORE'
+  },
+  /** TODO:sync NotificationList # */
 }

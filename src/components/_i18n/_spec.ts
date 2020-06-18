@@ -20,4 +20,13 @@ export const _spec = {
     deal_with: '',
   },
   /** TODO:sync message # */
+  /** TODO:sync NotificationList */
+  notification_list: {
+    _self: '',
+    system: '',
+    gc: '',
+    gp: '',
+    show_more: ''
+  },
+  /** TODO:sync NotificationList # */
 }
