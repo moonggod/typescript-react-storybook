@@ -55,19 +55,20 @@ export function _ListNotification({
   getListNotification
 }: Props) {
   const classes = useStyles()
-  const curCustomerId = 777 // TODO: where to get the current customer ID?
+  // const curCustomerId = 777 // TODO: where to get the current customer ID?
   const { t } = useTranslation(I18N_NS)
   useEffect(() => {
-    getListNotification(curCustomerId)
+    getListNotification({limit:10, secondsAgo: 3000})
   }, [getListNotification])
 
   if (isLoading) {
     return null // TODO: show global loading (e.g. https://github.com/rstacruz/nprogress) or local loading?
   }
   function deleteMe (id: Notification['id']) {
+    console.log(id) // TODO: delete me
   }
   const toggleShow = () => { // TODO: need to send real params
-    getListNotification(curCustomerId)
+    getListNotification({limit:10, secondsAgo: 3000})
   }
   return (
     <Box>

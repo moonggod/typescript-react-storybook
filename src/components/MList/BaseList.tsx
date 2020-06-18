@@ -1,11 +1,12 @@
 import React, { FunctionComponent, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, List, ListItem, ListItemText, ListItemSecondaryAction, Checkbox, ListItemIcon, Button, ListSubheader } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   img: {
-    height: '80px'
+    height: '80px',
+    margin: theme.spacing(0)
   },
   title: {
     margin: '0 0 36px'
@@ -83,8 +84,8 @@ export const BaseList: FunctionComponent = () => {
     price: 2000,
     id: 2
   },]
-  const handleSwitch = (event:any,value:number) => {
-    console.log(value)
+  const handleSwitch = () => {
+    // TODO: switch pages
   }
   return (
     <Box>

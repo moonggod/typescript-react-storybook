@@ -17,4 +17,20 @@ export class ListNotificationController
       console.log(params)
       return GetListNotificationResMock.build()
     }
+    @Method(
+      LIST_NOTIFICATION_ROUTES.deleteNotification.method,
+      LIST_NOTIFICATION_ROUTES.deleteNotification.path
+    )
+    deleteNotification(@Params() params: GetListNotificationReq): GetListNotificationRes {
+      console.log(params)
+      return GetListNotificationResMock.build()
+    }
+    @Method(
+      LIST_NOTIFICATION_ROUTES.markNotification.method,
+      LIST_NOTIFICATION_ROUTES.markNotification.path
+    )
+    markNotification(@Params() params: GetListNotificationReq): GetListNotificationRes {
+      console.log(params)
+      return GetListNotificationResMock.build()
+    }
 }

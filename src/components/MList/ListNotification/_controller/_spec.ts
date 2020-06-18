@@ -3,7 +3,7 @@ import { CreateControllerSpec, RequestMethod } from '../../../../mock/types'
 export const LIST_NOTIFICATION_ROUTES = {
   getListNotification: {
     method: RequestMethod.get,
-    path: '/message/v1/receive?limit=${limit}&secondsAgo=${secondsAgo}'
+    path: '/message/v1/receive?limit=:limit&secondsAgo=:secondsAgo'
   },
   deleteNotification: {
     method: RequestMethod.delete,

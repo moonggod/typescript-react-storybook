@@ -15,11 +15,47 @@ export const getListNotification = createAsyncThunk(
   async (query: GetListNotificationReq): Promise<GetListNotificationRes> => {
     const { data } = await api({
       method: LIST_NOTIFICATION_ROUTES.getListNotification.method,
+      url: LIST_NOTIFICATION_ROUTES.getListNotification.path
+      .replace(':limit', String(query.limit))
+      .replace(':secondsAgo', String(query.secondsAgo)),
+      headers: {
+        'Authorization': `Basic ${Cookies.get(GC_TOKEN) || 77}`, // TODO:change to true api
+        'lang': Cookies.get(COOKIE_LANG) || 'en'
+      },
+    })
+    return data
+  }
+)
+export const deleteNotification = createAsyncThunk(
+  `${SLICE_NAME}/deleteNotification`,
+  async (query: GetListNotificationReq): Promise<GetListNotificationRes> => {
+    const { data } = await api({
+      method: LIST_NOTIFICATION_ROUTES.getListNotification.method,
       url: LIST_NOTIFICATION_ROUTES.getListNotification.path.replace(
-        '${limit}',
+        ':limit',
         String(query.limit)
       ).replace(
-        '${secondsAgo}',
+        ':secondsAgo',
+        String(query.secondsAgo)
+      ),
+      headers: {
+        'Authorization': `Basic ${Cookies.get(GC_TOKEN) || 77}`, // TODO:change to true api
+        'lang': Cookies.get(COOKIE_LANG) || 'en'
+      },
+    })
+    return data
+  }
+)
+export const markNotification = createAsyncThunk(
+  `${SLICE_NAME}/markNotification`,
+  async (query: GetListNotificationReq): Promise<GetListNotificationRes> => {
+    const { data } = await api({
+      method: LIST_NOTIFICATION_ROUTES.getListNotification.method,
+      url: LIST_NOTIFICATION_ROUTES.getListNotification.path.replace(
+        ':limit',
+        String(query.limit)
+      ).replace(
+        ':secondsAgo',
         String(query.secondsAgo)
       ),
       headers: {
@@ -39,7 +75,7 @@ export const ListNotificationSlice = createSlice({
   },
   reducers: {},
   extraReducers: {
-    // scope: resetPassword
+    // getListNotification
     [getListNotification.pending.type]: state => {
       state.isLoading = true
     },
@@ -48,6 +84,28 @@ export const ListNotificationSlice = createSlice({
       state.isLoading = false
     },
     [getListNotification.rejected.type]: state => {
+      state.isLoading = false
+    },
+    // deleteNotification
+    [deleteNotification.pending.type]: state => {
+      state.isLoading = true
+    },
+    [deleteNotification.fulfilled.type]: (state, action) => {
+      state.listNotification = action.payload
+      state.isLoading = false
+    },
+    [deleteNotification.rejected.type]: state => {
+      state.isLoading = false
+    },
+    // markNotification
+    [markNotification.pending.type]: state => {
+      state.isLoading = true
+    },
+    [markNotification.fulfilled.type]: (state, action) => {
+      state.listNotification = action.payload
+      state.isLoading = false
+    },
+    [markNotification.rejected.type]: state => {
       state.isLoading = false
     },
   }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { Box, List, ListSubheader } from '@material-ui/core'
+import { Box, List } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
 import { getMessageList } from './_store/messageListSlice'
 import { RootState } from '../../../app/store'
@@ -41,13 +41,12 @@ export function _MessageList({
     setOpen(true)
     setId(id)
   }
-  const handleSwitch = (event:any,value:number) => { // TODO: need to send real params
+  const handleSwitch = () => { // TODO: need to send real params
     getMessageList(curCustomerId)
   }
   return (
     <Box>
       <List>
-        <ListSubheader>Message List</ListSubheader>
         <BServiceList data={messageList} handleMe={handleMe}/>
       </List>
       <Pagination count={10} variant="outlined" shape="rounded" onChange={handleSwitch} />

@@ -51,7 +51,7 @@ export function ListRender(props: propsType) {
               <Grid item xs={2}>
                 <Box className={classes.time}>{item.time}</Box>
               </Grid>
-              <IconButton className={classes.deleteBtn} aria-label="delete" color="primary" onClick={(item) => _deleteMe(item)}>
+              <IconButton className={classes.deleteBtn} aria-label="delete" color="primary" onClick={() => _deleteMe(item.id)}>
                 <DeleteOutline fontSize="small" />
               </IconButton>
             </Grid>

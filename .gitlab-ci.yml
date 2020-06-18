@@ -1,0 +1,58 @@
+stages:
+  - build
+  - package
+  - deploy
+
+build:
+  image: node:lts
+  stage: build
+  script: 
+  - yarn && yarn run build:staging
+  artifacts:
+    paths:
+    - build
+  tags: 
+  - docker
+
+.docker_build_tmpl: &docker_build_tmpl
+  stage: package
+  script:
+  - docker build -f ${DOCKERFILE_PATH} -t 939023048332.dkr.ecr.us-east-1.amazonaws.com/${REPOSITORY}:${CI_COMMIT_SHORT_SHA} ${BUILD_CONTEXT}
+  - docker push 939023048332.dkr.ecr.us-east-1.amazonaws.com/${REPOSITORY}:${CI_COMMIT_SHORT_SHA}
+  - docker rmi 939023048332.dkr.ecr.us-east-1.amazonaws.com/${REPOSITORY}:${CI_COMMIT_SHORT_SHA}
+
+package-frontend:
+  <<: *docker_build_tmpl
+  variables:
+    REPOSITORY: 'gfashion/frontend'
+    DOCKERFILE_PATH: 'Dockerfile'
+    BUILD_CONTEXT: '.'
+  tags: 
+  - docker
+  only:
+  - master
+
+regversion:
+  image: 939023048332.dkr.ecr.us-east-1.amazonaws.com/ops/regversion:059c89fb
+  stage: package 
+  script: /regversion
+  variables:
+    REPO_NAME: 'gfashion'
+    ENDPOINT: 'http://api.chatops.dev2.gfashion2020.tk/version/record/add'
+    TOKEN: 'aWTUTKfApdKiU4d'
+  tags: 
+  - docker
+  only:
+  - master
+
+deploy:
+  image: curlimages/curl
+  stage: deploy
+  script:
+  - curl remotecall.dev2.gfashion2020.tk/upgrade_frontend/${CI_COMMIT_SHORT_SHA} -X POST -H TOKEN:aWTUTKfApdKiU4d -v
+  - curl -H TOKEN:aWTUTKfApdKiU4d http://api.chatops.dev2.gfashion2020.tk/msg/hook/707658231291576331 -d "----> New version deployed on dev2 ${CI_COMMIT_BRANCH}:${CI_COMMIT_SHORT_SHA}<----" -v
+  only:
+  - master
+  tags:
+  - docker
+

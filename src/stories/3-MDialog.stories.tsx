@@ -6,4 +6,4 @@ export default {
   title: 'MDialog'
 }
 
-export const _MessageDialog = () => <Provider><MessageDialog/></Provider>
+export const _MessageDialog = () => <Provider><MessageDialog id={2} open={true}/></Provider>
