@@ -9,7 +9,10 @@ import { Notification } from '../_Notification'
 
 export class GetListNotificationReq {
   @IsInt()
-  customerId!: number
+  limit!: number
+
+  @IsInt()
+  secondsAgo!: number
 }
 
 export class GetListNotificationRes {

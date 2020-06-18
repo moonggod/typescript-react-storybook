@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { COOKIE_LANG, GC_TOKEN } from '../../../../consts'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { LIST_NOTIFICATION_ROUTES } from '../_controller/_spec'
 import {
@@ -11,15 +12,19 @@ const SLICE_NAME = 'ListNotificationSlice'
 
 export const getListNotification = createAsyncThunk(
   `${SLICE_NAME}/getListNotification`,
-  async (customerId: GetListNotificationReq['customerId']): Promise<GetListNotificationRes> => {
+  async (query: GetListNotificationReq): Promise<GetListNotificationRes> => {
     const { data } = await api({
       method: LIST_NOTIFICATION_ROUTES.getListNotification.method,
       url: LIST_NOTIFICATION_ROUTES.getListNotification.path.replace(
-        ':customerId',
-        String(customerId)
+        '${limit}',
+        String(query.limit)
+      ).replace(
+        '${secondsAgo}',
+        String(query.secondsAgo)
       ),
       headers: {
-        'Authorization': `Basic ${Cookies.get('token')}` // TODO:change to true api
+        'Authorization': `Basic ${Cookies.get(GC_TOKEN) || 77}`, // TODO:change to true api
+        'lang': Cookies.get(COOKIE_LANG) || 'en'
       },
     })
     return data
