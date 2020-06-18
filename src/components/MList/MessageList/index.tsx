@@ -25,7 +25,7 @@ export function RenderItems(props:{messageList:GetMessageListRes}) {
   const preventDefault = (event:any) => event.preventDefault()
   // const [open, setOpen] = useState(false)
   const [id, setId] = useState(0)
-
+  console.log(id)
   function handleMe (id: Message['id']) {
     // setOpen(true)
     setId(id)

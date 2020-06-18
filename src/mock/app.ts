@@ -2,9 +2,10 @@ import 'reflect-metadata'
 // https://github.com/typestack/routing-controllers
 import { createExpressServer } from 'routing-controllers'
 
-import { MListController } from './controllers/mList'
+import { MessageListController } from '../components/MList/MessageList/_controller'
+import { MessageDialogController } from '../components/MDialog/MessageDialog/_controller'
 
-const controllers = [MListController]
+const controllers = [MessageListController, MessageDialogController]
 
 export const app = createExpressServer({
   routePrefix: process.env.REACT_APP_API_BASE_URL,

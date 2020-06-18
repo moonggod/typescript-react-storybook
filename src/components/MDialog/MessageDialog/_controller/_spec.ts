@@ -1,12 +1,12 @@
-import { CreateControllerSpec, RequestMethod } from '../../types'
+import { CreateControllerSpec, RequestMethod } from '../../../../mock/types'
 
-export const M_LIST_ROUTES = {
+export const M_DIALOG_ROUTES = {
   getDialogMessageList: {
     method: RequestMethod.get,
     path: '/customers/getDialogMessage/:customerId'
   },
 }
 
-export type MListControllerSpec = CreateControllerSpec<
-  typeof M_LIST_ROUTES
+export type MessageDialogControllerSpec = CreateControllerSpec<
+  typeof M_DIALOG_ROUTES
 >

@@ -6,7 +6,7 @@ import {DialogMessageMock} from '../_DialogMessage/index.mock'
 const chance = Chance()
 
 export const GetDialogMessageListResMock = Factory.Sync.makeFactory<GetDialogMessageListRes>({
-  list: Factory.each(() =>
+  dialogMessageList: Factory.each(() =>
     DialogMessageMock.buildList(chance.integer({ min: 7, max: 7 }))
   )
 })

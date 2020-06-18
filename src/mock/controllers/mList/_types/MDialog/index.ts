@@ -13,5 +13,5 @@ export class GetDialogMessageListRes {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => DialogMessage)
-  list: DialogMessage[] = []
+  dialogMessageList: DialogMessage[] = []
 }
