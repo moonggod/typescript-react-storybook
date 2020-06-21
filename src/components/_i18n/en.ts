@@ -28,7 +28,8 @@ export const en: typeof _spec = {
     system: 'SYSTEM',
     gc: 'G-CLUB',
     gp: 'G_PAY',
-    show_more: 'SHOW MORE'
+    show_more: 'SHOW MORE',
+    category_normal: 'Normal'
   },
   /** TODO:sync NotificationList # */
 }

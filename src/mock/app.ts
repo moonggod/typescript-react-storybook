@@ -2,7 +2,7 @@ import 'reflect-metadata'
 // https://github.com/typestack/routing-controllers
 import { createExpressServer } from 'routing-controllers'
 
-import { MessageListController } from '../components/MList/MessageList/_controller'
+import { MessageListController } from '../components/MessageList/_controller'
 import { MessageDialogController } from '../components/MDialog/MessageDialog/_controller'
 import { ListNotificationController } from '../components/MList/ListNotification/_controller'
 

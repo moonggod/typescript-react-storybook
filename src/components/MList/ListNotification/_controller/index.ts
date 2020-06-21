@@ -1,36 +1,40 @@
-import { JsonController, Method, Params } from 'routing-controllers'
+import { JsonController, Method, Body, QueryParams } from 'routing-controllers'
 import { ListNotificationControllerSpec, LIST_NOTIFICATION_ROUTES } from './_spec'
 import {
   GetListNotificationReq,
   GetListNotificationRes,
+  DeleteNotificationReq,
+  DeleteNotificationRes,
+  MarkReadNotificationReq,
+  MarkReadNotificationRes
 } from './_types'
-import { GetListNotificationResMock } from './_types/index.mock'
+import { GetListNotificationResMock, DeleteNotificationResMock, MarkReadNotificationResMock } from './_types/index.mock'
 
 @JsonController()
 export class ListNotificationController
   implements ListNotificationControllerSpec {
     @Method(
       LIST_NOTIFICATION_ROUTES.getListNotification.method,
-      LIST_NOTIFICATION_ROUTES.getListNotification.path
+      LIST_NOTIFICATION_ROUTES.getListNotification.path.split('?')[0]
     )
-    getListNotification(@Params() params: GetListNotificationReq): GetListNotificationRes {
-      console.log(params)
-      return GetListNotificationResMock.build()
+    getListNotification(@QueryParams() query: GetListNotificationReq): GetListNotificationRes['listNotification'] {
+      console.log(query)
+      return GetListNotificationResMock()
     }
     @Method(
       LIST_NOTIFICATION_ROUTES.deleteNotification.method,
       LIST_NOTIFICATION_ROUTES.deleteNotification.path
     )
-    deleteNotification(@Params() params: GetListNotificationReq): GetListNotificationRes {
-      console.log(params)
-      return GetListNotificationResMock.build()
+    deleteNotification(@Body() body: DeleteNotificationReq): DeleteNotificationRes {
+      console.log(body)
+      return DeleteNotificationResMock.build()
     }
     @Method(
-      LIST_NOTIFICATION_ROUTES.markNotification.method,
-      LIST_NOTIFICATION_ROUTES.markNotification.path
+      LIST_NOTIFICATION_ROUTES.markReadNotification.method,
+      LIST_NOTIFICATION_ROUTES.markReadNotification.path
     )
-    markNotification(@Params() params: GetListNotificationReq): GetListNotificationRes {
-      console.log(params)
-      return GetListNotificationResMock.build()
+    markReadNotification(@Body() body: MarkReadNotificationReq): MarkReadNotificationRes {
+      console.log(body)
+      return MarkReadNotificationResMock.build()
     }
 }

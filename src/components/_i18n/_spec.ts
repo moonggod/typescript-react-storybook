@@ -26,7 +26,8 @@ export const _spec = {
     system: '',
     gc: '',
     gp: '',
-    show_more: ''
+    show_more: '',
+    category_normal: ''
   },
   /** TODO:sync NotificationList # */
 }

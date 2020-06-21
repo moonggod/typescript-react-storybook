@@ -1,10 +1,12 @@
 import {
   IsArray,
   ValidateNested,
-  IsInt
+  IsInt,
+  IsString,
+  IsNotEmpty
 } from 'class-validator'
 import { Type } from 'class-transformer'
-import { Notification } from '../_Notification'
+import { NotificationItem } from '../_Notification'
 // import { IsSameWith } from './IsSameWith'
 
 export class GetListNotificationReq {
@@ -18,6 +20,43 @@ export class GetListNotificationReq {
 export class GetListNotificationRes {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => Notification)
-  listNotification: Notification[] = []
+  @Type(() => NotificationItem)
+  listNotification: NotificationItem[] = []
+}
+
+export class DeleteNotificationReq {
+  @IsNotEmpty()
+  @IsString()
+  id: string = ''
+}
+export class DeleteNotificationRes {
+  @IsNotEmpty()
+  @IsString()
+  action: string = ''
+
+  @IsNotEmpty()
+  @IsString()
+  id: string = ''
+
+  @IsNotEmpty()
+  @IsString()
+  status: string = ''
+}
+export class MarkReadNotificationReq {
+  @IsNotEmpty()
+  @IsString()
+  id: string = ''
+}
+export class MarkReadNotificationRes {
+  @IsNotEmpty()
+  @IsString()
+  action: string = ''
+
+  @IsNotEmpty()
+  @IsString()
+  id: string = ''
+
+  @IsNotEmpty()
+  @IsString()
+  status: string = ''
 }

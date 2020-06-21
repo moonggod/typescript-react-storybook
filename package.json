@@ -43,8 +43,10 @@
     "test": "react-app-rewired test",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "storybook:newMock": "cross-env MOCK=api concurrently --raw \"yarn run mock:newAPI\" \"yarn run storybook\"",
-    "mock:newAPI": "env-cmd -f .env.development ts-node-dev --project src/mock/tsconfig.json --no-notify src/mock/main.ts"
+    "storybook:newMock": "cross-env MOCK=api concurrently --raw \"yarn run mock:newAPI:storybook\" \"yarn run storybook\"",
+    "storybook:env": "cross-env MOCK=env concurrently --raw \"yarn run storybook\"",
+    "mock:newAPI": "env-cmd -f .env.development ts-node-dev --project src/mock/tsconfig.json --no-notify src/mock/main.ts",
+    "mock:newAPI:storybook": "cross-env TYPE=storybook env-cmd -f .env.development ts-node-dev --project src/mock/tsconfig.json --no-notify src/mock/main.ts"
   },
   "eslintConfig": {
     "extends": "react-app"

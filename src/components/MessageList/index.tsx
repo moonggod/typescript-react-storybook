@@ -3,9 +3,9 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Box, List } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
 import { getMessageList } from './_store/messageListSlice'
-import { RootState } from '../../../app/store'
+import { RootState } from '../../app/store'
 import { BServiceList } from './_compos/BServiceList'
-import { MessageDialog } from '../../MDialog/MessageDialog'
+import { MessageDialog } from '../MDialog/MessageDialog'
 import { Message } from './_controller/_types'
 
 const connector = connect(
@@ -39,6 +39,7 @@ export function _MessageList({
   }
   function handleMe (id: Message['id']) {
     setOpen(true)
+    setTimeout(() => setOpen(false), 300)
     setId(id)
   }
   const handleSwitch = () => { // TODO: need to send real params

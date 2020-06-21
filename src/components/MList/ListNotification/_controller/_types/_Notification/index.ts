@@ -1,39 +1,99 @@
 import {
   IsNotEmpty,
   IsString,
-  IsOptional,
+  IsBoolean,
   IsInt,
-  IsDate,
+  IsOptional,
+  IsObject
 } from 'class-validator'
+import { Type } from 'class-transformer'
+import { ContentMock, TitleMock } from './index.mock'
 // import { IsSameWith } from './IsSameWith'
-export class Notification {
-  @IsNotEmpty()
-  @IsString()
-  designer: string = ''
 
-  @IsNotEmpty()
+export class Content {
+  @IsOptional()
   @IsString()
-  @IsDate()
-  time: (string | Date) = ''
+  en: string = ''
 
   @IsOptional()
   @IsString()
-  user: string = ''
+  zh: string = ''
+}
 
-  @IsInt()
-  order: number = 200000
+export class Title {
+  @IsOptional()
+  @IsString()
+  en: string = ''
+
+  @IsOptional()
+  @IsString()
+  zh: string = ''
+}
+
+export class NotificationItem {
+  @IsNotEmpty()
+  @IsString()
+  category: string = ''
+
+  @IsNotEmpty()
+  @IsObject()
+  @Type(() => Content)
+  content: object = ContentMock.build()
 
   @IsNotEmpty()
   @IsString()
-  service: string = ''
+  _content: string = ''
 
   @IsNotEmpty()
   @IsString()
-  content: string = ''
+  contract: string = ''
 
-  @IsInt()
-  status: number = 0
+  @IsNotEmpty()
+  @IsString()
+  data: string = ''
 
+  @IsNotEmpty()
+  @IsString()
+  id: string = ''
+
+  @IsNotEmpty()
+  @IsBoolean()
+  opened: boolean = true
+
+  @IsNotEmpty()
+  @IsString()
+  picture: string = ''
+
+  @IsNotEmpty()
+  @IsString()
+  receiver: string = ''
+
+  @IsNotEmpty()
+  @IsString()
+  sender: string = ''
+
+  @IsNotEmpty()
   @IsInt()
-  id: number = 0
+  timeOpened: number = 0
+  
+  @IsNotEmpty()
+  @IsInt()
+  timeSent: number = 0
+
+  @IsNotEmpty()
+  @IsInt()
+  timeUpdated: number = 0
+
+  @IsNotEmpty()
+  @IsObject()
+  @Type(() => Title)
+  title: object = TitleMock.build()
+
+  @IsNotEmpty()
+  @IsString()
+  _title: string = ''
+  
+  @IsNotEmpty()
+  @IsString()
+  updatedBy: string = ''
 }

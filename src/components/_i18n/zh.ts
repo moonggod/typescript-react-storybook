@@ -28,7 +28,8 @@ export const zh: typeof _spec = {
     system: '系统',
     gc: 'G-CLUB',
     gp: 'G_PAY',
-    show_more: '展示更多'
+    show_more: '展示更多',
+    category_normal: '普通'
   },
   /** TODO:sync NotificationList # */
 }

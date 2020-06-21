@@ -2,7 +2,7 @@ import React from 'react'
 import Provider from '../Provider'
 import { BaseList } from '../components/MList/BaseList'
 import { CardList } from '../components/MList/CardList'
-import { MessageList } from '../components/MList/MessageList'
+import { MessageList } from '../components/MessageList'
 import { ListNotification } from '../components/MList/ListNotification'
 
 export default {

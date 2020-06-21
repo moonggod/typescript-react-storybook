@@ -4,7 +4,7 @@ import {
   GetMessageListReq,
   GetMessageListRes
 } from '../_controller/_types'
-import { api } from '../../../../utils/api'
+import { api } from '../../../utils/api'
 
 const SLICE_NAME = 'MListSlice'
 

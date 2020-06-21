@@ -1,7 +1,7 @@
 import React from 'react'
 //components
 import { Box, createStyles, makeStyles, Theme } from '@material-ui/core'
-import { MessageList } from '../../components/MList/MessageList'
+import { MessageList } from '../../components/MessageList'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 

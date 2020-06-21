@@ -6,5 +6,5 @@ module.exports = function (app) {
   if (MOCK === "api") {
     target = process.env.REACT_APP_API_MOCK_ADDRESS;
   }
-  app.use(createProxyMiddleware("/demo", { target, changeOrigin: true }));
+  app.use(createProxyMiddleware("/message", { target, changeOrigin: true }));
 };

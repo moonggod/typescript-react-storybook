@@ -158,7 +158,7 @@ export const CardList: FunctionComponent = () => {
   })
   let favorites = useSelector(selectFavorites)
   const handleSwitch = (event: any, value: number) => {
-    console.log(event)
+    event.preventDefault()
     setQuery({ ...query, pageNum: value })
     dispatch(
       fetchFavorites({
@@ -174,7 +174,6 @@ export const CardList: FunctionComponent = () => {
         data: query
       })
     )
-    console.log('mount it!')
   }, [dispatch, query])
   return (
     <Box>
