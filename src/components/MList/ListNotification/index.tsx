@@ -34,14 +34,19 @@ const useStyles = makeStyles((theme:Theme) => ({
     fontSize: '22px',
   },
   subTitle: {
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(2, 2, 1),
     fontSize: '18px'
   },
   fontWeight: {
     fontWeight: 500
   },
   toggleShow: {
-    textAlign: 'center'
+    textAlign: 'center',
+    margin: theme.spacing(2, 0)
+  },
+  listWindow: {
+    maxHeight: '500px',
+    overflow: 'auto'
   }
 }));
 
@@ -106,6 +111,7 @@ export function _ListNotification({
           <Settings />
         </IconButton>
       </Box>
+      <Box className={classes.listWindow}>
       {
         myList.categoryOrder.map((c: string) => {
           const _list = switchHelper(myList.categoryList, c)
@@ -115,9 +121,7 @@ export function _ListNotification({
               _list ? (
                 <Box>
                   <Typography className={classes.subTitle} noWrap gutterBottom variant="h5" component="h2">
-                    {
-                      c === 'normal' ? t(I18N.notification_list.category_normal) : ''
-                    }
+                    {t(switchHelper(I18N.notification_list, `category_${c}`))}
                   </Typography>
                   <List className={classes.list}>
                   {
@@ -137,10 +141,11 @@ export function _ListNotification({
       {
         total > 5 ? (
           <Box className={classes.toggleShow}>
-            <Button variant="text" onClick={toggleShow}>{t(I18N.notification_list.show_more)}</Button>
+            <Button variant="text" onClick={toggleShow}>{showNumber === 5 ? t(I18N.notification_list.show_more) : t(I18N.notification_list.show_less)}</Button>
           </Box>
         ) : null
       }
+      </Box>
     </Box>
   )
 }

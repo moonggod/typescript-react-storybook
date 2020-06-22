@@ -15,11 +15,9 @@ export const TitleMock = Factory.Sync.makeFactory<Title>({
 })
 
 export const NotificationItemMock = Factory.Sync.makeFactory<NotificationItem>({
-  category: Factory.each(() => chance.name()),
-  title: Factory.each(() => chance.sentence()),
-  _title: Factory.each(() => chance.sentence()),
-  content: Factory.each(() => chance.paragraph()),
-  _content: Factory.each(() => chance.paragraph()),
+  category: Factory.each(() => chance.pickone(['normal', 'important'])),
+  title: TitleMock.build(),
+  content: ContentMock.build(),
   contract: Factory.each(() => chance.phone()),
   data: Factory.each(() => chance.word()),
   opened: Factory.each(() => chance.bool()),

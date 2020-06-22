@@ -1,9 +1,10 @@
 import React from 'react'
+import { Box } from '@material-ui/core'
 import Provider from '../Provider'
 import { BaseList } from '../components/MList/BaseList'
 import { CardList } from '../components/MList/CardList'
 import { MessageList } from '../components/MessageList'
-import { ListNotification } from '../components/MList/ListNotification'
+import { NotificationWithButton } from '../components/MList/ListNotification/indexWithButton'
 
 export default {
   title: 'MList'
@@ -15,4 +16,4 @@ export const _CardList = () => <Provider><CardList/></Provider>
 
 export const _MessageList = () => <Provider><MessageList/></Provider>
 
-export const _ListNotification = () => <Provider><ListNotification/></Provider>
+export const _ListNotification = () => <Provider><Box style={{ display: 'flex', justifyContent: 'center', paddingTop: '30px' }}><NotificationWithButton/></Box></Provider>

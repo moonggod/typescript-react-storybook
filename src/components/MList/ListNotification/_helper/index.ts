@@ -37,4 +37,30 @@ export function adaptList(list: [NotificationItem], showNumber: number) {
  */
 export function switchHelper(myList:any, c:string) {
     return myList[c]
-  }
+}
+
+/**
+ * 算出消息发出时间对应的已过去的时间
+ * @param time
+ */
+export function getElapsedTime(time:number) {
+    const _time = (new Date().getTime()) - time
+    const days = Math.floor(_time / (24*60*60*1000))
+    const hours = Math.floor(_time / (60*60*1000)) % 24
+    const minutes = Math.floor(_time / (60*1000)) % (24 * 60)
+    const seconds = Math.floor(_time / (1000)) % (24 * 60 * 60)
+    let unit = ''
+    if (days) {
+        unit = 'days_ago'
+    } else if (hours) {
+        unit = 'hours_ago'
+    } else if (minutes) {
+        unit = 'minutes_ago'
+    } else if (seconds) {
+        unit = 'seconds_ago'
+    }
+    return {
+        result: days || hours || minutes || seconds,
+        unit: unit
+    }
+}

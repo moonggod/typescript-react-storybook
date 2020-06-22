@@ -40,9 +40,8 @@ export class NotificationItem {
   @Type(() => Content)
   content: object = ContentMock.build()
 
-  @IsNotEmpty()
   @IsString()
-  _content: string = ''
+  _content?: string = ''
 
   @IsNotEmpty()
   @IsString()
@@ -89,9 +88,8 @@ export class NotificationItem {
   @Type(() => Title)
   title: object = TitleMock.build()
 
-  @IsNotEmpty()
   @IsString()
-  _title: string = ''
+  _title?: string = ''
   
   @IsNotEmpty()
   @IsString()

@@ -27,7 +27,13 @@ export const _spec = {
     gc: '',
     gp: '',
     show_more: '',
-    category_normal: ''
+    category_normal: '',
+    category_important: '',
+    show_less: '',
+    days_ago: '',
+    hours_ago: '',
+    minutes_ago: '',
+    seconds_ago: '',
   },
   /** TODO:sync NotificationList # */
 }
