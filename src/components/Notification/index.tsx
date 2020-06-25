@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { Box, List, Button, Typography, IconButton } from '@material-ui/core'
-import { getListNotification, deleteNotification, markReadNotification } from './_store/listNotificationSlice'
-import { RootState } from '../../../app/store'
+import { Box, List, Button, Typography, IconButton, ListSubheader } from '@material-ui/core'
+import { getListNotification, deleteNotification, markReadNotification } from './_store/notificationSlice'
+import { RootState } from '../../app/store'
 import { ItemRender } from './_compos/ItemRender'
 import { NotificationItem } from './_controller/_types'
 import { useTranslation } from 'react-i18next'
-import { I18N, I18N_NS } from '../../_i18n'
+import { I18N, I18N_NS } from './_i18n'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { adaptList, switchHelper } from './_helper'
 import {
@@ -20,42 +20,52 @@ const useStyles = makeStyles((theme:Theme) => ({
   },
   setting: {
     position: 'absolute',
-    right: '10px',
-    color: '#000000'
+    right: theme.spacing(1),
+    color: '#000000',
+    top: theme.spacing(0.5)
   },
   list: {
     backgroundColor: '#f5f5f5',
+    padding: 0
   },
   topTitleBox: {
     borderBottom: '1px solid #e8e8e8'
   },
   title: {
     padding: theme.spacing(1, 2),
-    fontSize: '22px',
+    fontSize: '22px'
   },
   subTitle: {
-    padding: theme.spacing(2, 2, 1),
-    fontSize: '18px'
+    padding: theme.spacing(0, 2, 0),
+    fontSize: '18px',
+    color: '#333',
+    backgroundColor: '#fff',
   },
   fontWeight: {
     fontWeight: 500
   },
   toggleShow: {
     textAlign: 'center',
-    margin: theme.spacing(2, 0)
+    margin: theme.spacing(1.5, 0, 0.5)
   },
   listWindow: {
     maxHeight: '500px',
     overflow: 'auto'
+  },
+  listContent: {
+    padding: theme.spacing(1,0)
   }
 }));
 
 const connector = connect(
-  (state: RootState) => {
-    const { isLoading, listNotification } = state.ListNotificationSlice
+  (state: RootState, props: {setTotal?: any}) => {
+    const { isLoading, listNotification, total, unreadTotal } = state.notificationSlice
     return {
       isLoading,
-      listNotification
+      listNotification,
+      total,
+      unreadTotal,
+      setTotal: props.setTotal
     }
   },
   { 
@@ -67,10 +77,13 @@ const connector = connect(
 
 export type Props = ConnectedProps<typeof connector>
 
-export const ListNotification = connector(_ListNotification)
-export function _ListNotification({
+export const Notification = connector(_Notification)
+export function _Notification({
   isLoading,
   listNotification,
+  total,
+  unreadTotal,
+  setTotal,
   getListNotification
 }: Props) {
   const classes = useStyles()
@@ -78,18 +91,20 @@ export function _ListNotification({
   const { t } = useTranslation(I18N_NS)
   const [myList, setMyList] = useState({categoryOrder:[],categoryList: {}})
   const [showNumber, setShowNumber] = useState(5)
-  const [total, setTotal] = useState(0)
-
+  
   useEffect(() => {
-    getListNotification({limit:10, secondsAgo: 20000})
+    getListNotification({limit:10, secondsAgo: 90000000})
   }, [getListNotification])
 
   useEffect(() => {
     if (listNotification.length) {
-      setTotal(listNotification.length)
       setMyList(adaptList(listNotification, showNumber))
     }
   }, [listNotification, showNumber])
+
+  useEffect(() => {
+    setTotal(unreadTotal)
+  }, [setTotal, unreadTotal])
 
   if (isLoading) {
     return null // TODO: show global loading (e.g. https://github.com/rstacruz/nprogress) or local loading?
@@ -101,7 +116,7 @@ export function _ListNotification({
     <Box className={classes.popWindow}>
       <Box className={classes.topTitleBox} display="flex">
         <Typography className={classes.title} noWrap gutterBottom variant="h3" component="h2">
-          {t(I18N.notification_list._self)}
+          {t(I18N.notification._self)}
         </Typography>
         <IconButton
           className={classes.setting}
@@ -120,17 +135,20 @@ export function _ListNotification({
               {
               _list ? (
                 <Box>
-                  <Typography className={classes.subTitle} noWrap gutterBottom variant="h5" component="h2">
-                    {t(switchHelper(I18N.notification_list, `category_${c}`))}
-                  </Typography>
                   <List className={classes.list}>
-                  {
-                    _list.map((item:NotificationItem) => {
-                      return (
-                        <ItemRender item={item} key={item.id} />
-                      )
-                    })
-                  }
+                    <ListSubheader className={classes.subTitle}>
+                      {t(switchHelper(I18N.notification, `category_${c}`))}
+                    </ListSubheader>
+                    <Box className={classes.listContent}>
+                    {
+                      _list.map((item:NotificationItem) => {
+
+                        return (
+                          <ItemRender item={item} key={item.id} />
+                        )
+                      })
+                    }
+                    </Box>
                   </List>
                 </Box>
               ) : null
@@ -141,7 +159,7 @@ export function _ListNotification({
       {
         total > 5 ? (
           <Box className={classes.toggleShow}>
-            <Button variant="text" onClick={toggleShow}>{showNumber === 5 ? t(I18N.notification_list.show_more) : t(I18N.notification_list.show_less)}</Button>
+            <Button variant="text" onClick={toggleShow}>{showNumber === 5 ? t(I18N.notification.show_more) : t(I18N.notification.show_less)}</Button>
           </Box>
         ) : null
       }

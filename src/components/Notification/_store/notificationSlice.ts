@@ -1,7 +1,4 @@
-import Cookies from 'js-cookie'
-import { COOKIE_LANG, GC_TOKEN } from '../../../../consts'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { LIST_NOTIFICATION_ROUTES } from '../_controller/_spec'
 import {
   GetListNotificationReq,
   // GetListNotificationRes,
@@ -11,22 +8,21 @@ import {
   MarkReadNotificationRes,
   NotificationItem
 } from '../_controller/_types'
-import { api } from '../../../../utils/api'
-import { NotificationItemMock, DeleteNotificationResMock } from '../_controller/_types/index.mock'
+import { api } from '../../../utils/api'
+import { getLang } from '../../../i18n/utils'
 
-const SLICE_NAME = 'ListNotificationSlice'
+const SLICE_NAME = 'notificationSlice'
 
 export const getListNotification = createAsyncThunk(
   `${SLICE_NAME}/getListNotification`,
   async (query: GetListNotificationReq): Promise<[NotificationItem]> => {
     const { data } = await api({
-      method: LIST_NOTIFICATION_ROUTES.getListNotification.method,
-      url: LIST_NOTIFICATION_ROUTES.getListNotification.path
-      .replace('{limit}', String(query.limit))
-      .replace('{secondsAgo}', String(query.secondsAgo)),
+      baseURL: '/',
+      method: 'get',
+      url: `/message/v1/receive?limit=${query.limit}&secondsAgo=${query.secondsAgo}`,
       headers: {
-        'Authorization': `123`, // TODO:change to true api
-        'lang': Cookies.get(COOKIE_LANG) || 'en'
+        'Authorization': `SID=937eaoWFf17BTMSE4x3kl0CkfV6q7mmzQLdpsqOCVp0`, // TODO: need true token
+        'lang': getLang()
       },
     })
     return data
@@ -36,13 +32,15 @@ export const deleteNotification = createAsyncThunk(
   `${SLICE_NAME}/deleteNotification`,
   async (query: DeleteNotificationReq): Promise<DeleteNotificationRes> => {
     const { data } = await api({
-      method: LIST_NOTIFICATION_ROUTES.deleteNotification.method,
-      url: LIST_NOTIFICATION_ROUTES.deleteNotification.path,
+      baseURL: '/',
+      method: 'delete',
+      url: `/message/v1/delete`,
       data: query,
       headers: {
-        'Authorization': `Basic ${Cookies.get(GC_TOKEN) || 77}`
+        // 'Authorization': `123`
       },
     })
+    data.id = query.id // TODO: mock delete, need to delete
     return data
   }
 )
@@ -50,30 +48,64 @@ export const markReadNotification = createAsyncThunk(
   `${SLICE_NAME}/markReadNotification`,
   async (query: MarkReadNotificationReq): Promise<MarkReadNotificationRes> => {
     const { data } = await api({
-      method: LIST_NOTIFICATION_ROUTES.markReadNotification.method,
-      url: LIST_NOTIFICATION_ROUTES.markReadNotification.path,
+      baseURL: '/',
+      method: 'post',
+      url: `/message/v1/markRead`,
       data: query,
       headers: {
-        'Authorization': `Basic ${Cookies.get(GC_TOKEN) || 77}`
+        // 'Authorization': `123`
       },
     })
     return data
   }
 )
 
-const listNotification:[NotificationItem] = [NotificationItemMock.build()]
+const deleteResult:DeleteNotificationRes = {
+  action: '',
+  id: '',
+  status: '',
+}
 
-export const ListNotificationSlice = createSlice({
+const listNotification:[NotificationItem] = [{
+  category: '',
+  content: {},
+  contract: '',
+  data: '',
+  id: '',
+  opened: false,
+  picture: '',
+  receiver: '',
+  sender: '',
+  timeOpened: -1,
+  timeSent: -1,
+  timeUpdated: -1,
+  title: {},
+  updatedBy: '',
+}]
+
+const markReadResult:MarkReadNotificationRes = {
+  action: '',
+  id: '',
+  status: '',
+}
+
+const readIdStr:string = ''
+
+export const notificationSlice = createSlice({
   name: SLICE_NAME,
   initialState: {
     isLoading: false,
     listNotification,
     deleteLoading: false, 
-    deleteResult: DeleteNotificationResMock.build(),
+    deleteResult,
     markReadLoaing: false,
-    markReadResult: {},
+    markReadResult,
+    unreadTotal: 0,
+    total:0,
+    readIdStr
   },
-  reducers: {},
+  reducers: {
+  },
   extraReducers: {
     // getListNotification
     [getListNotification.pending.type]: state => {
@@ -81,6 +113,8 @@ export const ListNotificationSlice = createSlice({
     },
     [getListNotification.fulfilled.type]: (state, action) => {
       state.listNotification = action.payload
+      state.unreadTotal = action.payload.length
+      state.total = action.payload.length
       state.isLoading = false
     },
     [getListNotification.rejected.type]: state => {
@@ -93,6 +127,10 @@ export const ListNotificationSlice = createSlice({
     [deleteNotification.fulfilled.type]: (state, action) => {
       state.deleteResult = action.payload
       state.deleteLoading = false
+      if (state.readIdStr.indexOf(`,${state.deleteResult.id}`) !== -1) {
+        state.unreadTotal -= 1
+      }
+      state.total -= 1
     },
     [deleteNotification.rejected.type]: state => {
       state.deleteLoading = false
@@ -104,6 +142,8 @@ export const ListNotificationSlice = createSlice({
     [markReadNotification.fulfilled.type]: (state, action) => {
       state.markReadResult = action.payload
       state.markReadLoaing = false
+      state.readIdStr = `${state.readIdStr},${state.markReadResult.id}`
+      state.unreadTotal -= 1
     },
     [markReadNotification.rejected.type]: state => {
       state.markReadLoaing = false

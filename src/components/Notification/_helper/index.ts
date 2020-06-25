@@ -1,9 +1,12 @@
 import { NotificationItem } from '../_controller/_types'
 import i18next from 'i18next'
 
+export const CATEGORY_ORDER = ['normal']
+
 /**
  * message list change to diff sort
  * @param list 
+ * @param showNumber 
  */
 export function adaptList(list: [NotificationItem], showNumber: number) {
     let categoryList:any = {}
@@ -29,7 +32,6 @@ export function adaptList(list: [NotificationItem], showNumber: number) {
         categoryList
     }
 }
-
 /**
  * 获取对应类型的数组
  * @param myList

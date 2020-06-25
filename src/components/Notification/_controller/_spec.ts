@@ -1,4 +1,4 @@
-import { CreateControllerSpec, RequestMethod } from '../../../../mock/types'
+import { CreateControllerSpec, RequestMethod } from '../../../mock/types'
 
 export const LIST_NOTIFICATION_ROUTES = {
   getListNotification: {

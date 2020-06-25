@@ -95,3 +95,32 @@ export class NotificationItem {
   @IsString()
   updatedBy: string = ''
 }
+
+export interface ContentI {
+  en?: string
+  zh?: string
+}
+
+export interface TitleI {
+  en?: string
+  zh?: string
+}
+
+export interface NotificationItemI {
+  category: string
+  content: Content
+  _content?: string
+  contract: string
+  data: string
+  id: string
+  opened: boolean
+  picture: string
+  receiver: string
+  sender: string
+  timeOpened: number
+  timeSent: number
+  timeUpdated: number
+  title: Title
+  _title?: string
+  updatedBy: string
+}

@@ -60,3 +60,30 @@ export class MarkReadNotificationRes {
   @IsString()
   status: string = ''
 }
+
+export interface GetListNotificationReqI {
+  limit?: number
+  secondsAgo?: number,
+  login?:any
+}
+
+export interface _GetListNotificationResI {
+  listNotification: [NotificationItem]
+}
+
+export interface DeleteNotificationReqI {
+  id: string
+}
+export interface DeleteNotificationResI {
+  action: string
+  id: string
+  status: string
+}
+export interface MarkReadNotificationReqI {
+  id: string
+}
+export interface MarkReadNotificationResI {
+  action: string
+  id: string
+  status: string
+}

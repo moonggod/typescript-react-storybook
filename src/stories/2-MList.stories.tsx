@@ -4,7 +4,7 @@ import Provider from '../Provider'
 import { BaseList } from '../components/MList/BaseList'
 import { CardList } from '../components/MList/CardList'
 import { MessageList } from '../components/MessageList'
-import { NotificationWithButton } from '../components/MList/ListNotification/indexWithButton'
+import { NotificationWithButton } from '../components/Notification/indexWithButton'
 
 export default {
   title: 'MList'
