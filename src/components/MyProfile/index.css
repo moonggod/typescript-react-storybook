@@ -1,0 +1,62 @@
+.container input {
+  height: 24px;
+  padding: 0 14px;
+  font-size: 12px;
+}
+
+.container label {
+  height: 24px;
+  top: -6px;
+  font-size: 12px;
+}
+
+.container label[data-shrink='true'] {
+  top: 0;
+  font-size: 12px;
+}
+
+.passwordStrengthContainer {
+  height: 24px;
+  font-size: 14px;
+  background-color: lightgrey;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+}
+
+.containerOutline {
+  border-width: 1px;
+  border-color: lightgrey !important;
+}
+
+.subTitle {
+  font-size: 20px;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.subField {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.requiredSign {
+  color: red;
+}
+
+.fieldVerticalMargin {
+  height: 16px;
+}
+
+.fieldInnerVerticalMargin {
+  height: 5px;
+}
+
+.subFormBox {
+  display: flex;
+  flex-direction: column;
+  max-width: 380px;
+  min-width: 200px;
+  width: 40%;
+  margin-right: 30px;
+}

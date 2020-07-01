@@ -15,6 +15,9 @@ import {templateSlice} from '../components/Template/_store/templateSlice' // TOD
 import {shoppingCartSlice} from '../components/ShoppingCart/_store/shoppingCartSlice' // TODO: notificationSlice
 import axiosMiddleware from 'redux-axios-middleware'
 
+import { accountSecuritySlice } from '../components/AccountSecurity/_store/accountSecuritySlice'
+import { myAddressSlice } from '../components/MyAddress/_store/myAddressSlice'
+
 const middleware = [
   ...getDefaultMiddleware({ serializableCheck: false }),
   axiosMiddleware(api)
@@ -27,6 +30,8 @@ const rootReducer = combineReducers({
   [notificationSlice.name]: notificationSlice.reducer, // TODO:sync notificationSlice
   [templateSlice.name]: templateSlice.reducer, // TODO:sync templateSlice
   [shoppingCartSlice.name]: shoppingCartSlice.reducer, // TODO:sync shoppingCartSlice
+  [myAddressSlice.name]: myAddressSlice.reducer,
+  [accountSecuritySlice.name]: accountSecuritySlice.reducer
 })
 
 export const store = configureStore({

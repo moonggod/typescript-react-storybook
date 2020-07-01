@@ -6,7 +6,7 @@ import {TemplateMock} from '../_Template/index.mock'
 const chance = Chance()
 
 export const GetTemplateListResMock = Factory.Sync.makeFactory<GetTemplateListRes>({
-  messageList: Factory.each(() =>
+  list: Factory.each(() =>
     TemplateMock.buildList(chance.integer({ min: 7, max: 7 }))
   )
 })

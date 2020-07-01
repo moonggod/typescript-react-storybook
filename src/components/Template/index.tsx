@@ -28,14 +28,14 @@ export function _Template({
   isLoading
 }: Props) {
   const [open, setOpen] = React.useState(false)
-  const [severity, setSeverity] = React.useState('success')
+  // const [severity, setSeverity] = React.useState('success')
 
   if (isLoading) {
     return null
   }
 
   const handleClick = () => {
-    setSeverity('warning')
+    // setSeverity('warning')
     setOpen(true)
   }
 
@@ -53,7 +53,7 @@ export function _Template({
             Open success snackbar
           </Button>
           <GSnackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-            <Alert severity={severity}>
+            <Alert severity="success">
               This is a success message!
             </Alert>
           </GSnackbar>
