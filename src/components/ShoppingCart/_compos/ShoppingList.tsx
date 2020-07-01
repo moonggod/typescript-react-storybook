@@ -29,9 +29,9 @@ type propsType = {
 export function ShoppingList(props: propsType) {
   const classes = useStyles()
   const preventDefault = (event:any) => event.preventDefault()
-  function _handleMe (id: Template['id']) {
-    props.handleMe(id)
-  }
+  // function _handleMe (id: Template['id']) {
+  //   props.handleMe(id)
+  // }
   const [checked, setChecked] = React.useState([0]);
 
   const handleToggle = (value: number) => () => {
@@ -74,19 +74,19 @@ export function ShoppingList(props: propsType) {
         const _classTitle = item.status === 0 ? classes.fontWeight : ''
         const labelId = `checkbox-list-label-${item.id}`;
         return (
-          <ListItem className={classes.listItem}  key={item.id} onClick={handleToggle}>
+          <ListItem className={classes.listItem}  key={item.id} onClick={() => handleToggle(item.id)}>
             <Grid container spacing={3}>
-              <Fragment>
+            <Fragment>
                 <Grid item xs={2}>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={checked.indexOf(item.id) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
-                  />
-                </ListItemIcon>
+                  <ListItemIcon>
+                    <Checkbox
+                      edge="start"
+                      checked={checked.indexOf(item.id) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                  </ListItemIcon>
                 </Grid>
                 <Grid item xs={4}>
                   <Box className={_classTitle}>Designer:&nbsp;{item.designer}</Box>
@@ -103,7 +103,34 @@ export function ShoppingList(props: propsType) {
                    <Box className={_classTitle}>Service:&nbsp;{item.service}</Box>
                 </Grid>
               </Fragment>
-              </Grid>
+              <Fragment>
+                <Grid item xs={2}>
+                  <ListItemIcon>
+                    <Checkbox
+                      edge="start"
+                      checked={checked.indexOf(item.id) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                  </ListItemIcon>
+                </Grid>
+                <Grid item xs={4}>
+                  <Box className={_classTitle}>Designer:&nbsp;{item.designer}</Box>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box className={_classTitle}>User:&nbsp;{item.user}</Box>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box className={_classTitle}>
+                    Order:&nbsp;<Link href="#" onClick={preventDefault}>{item.order}</Link>
+                  </Box>
+                </Grid>
+                <Grid item xs={2}>
+                   <Box className={_classTitle}>Service:&nbsp;{item.service}</Box>
+                </Grid>
+              </Fragment>
+            </Grid>
           </ListItem>
         )
       })

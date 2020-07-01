@@ -1,4 +1,4 @@
-import React, {  } from 'react'
+import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { Box, Grid } from '@material-ui/core'
 import { RootState } from '../../app/store'
@@ -8,8 +8,9 @@ import { DelistingList } from './_compos/DelistingList'
 
 const connector = connect(
   (state: RootState) => {
-    const {  } = state.shoppingCartSlice
+    const { isLoading } = state.shoppingCartSlice
     return {
+      isLoading
     }
   },
   {  }
@@ -19,7 +20,12 @@ export type Props = ConnectedProps<typeof connector>
 
 export const ShoppingCart = connector(_ShoppingCart)
 export function _ShoppingCart({
+  isLoading
 }: Props) {
+  if (isLoading) {
+    return null
+  }
+
   return (
     <Box>
       <Grid container spacing={3}>
