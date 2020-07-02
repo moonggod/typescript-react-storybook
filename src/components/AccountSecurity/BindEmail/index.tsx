@@ -15,13 +15,20 @@ import UTextPro from '../UTextPro'
 import { BindEmailReq } from '../_controller/_types'
 import { useFormValidation } from '../../../utils/formValidation/useFormValidation'
 
+type OwnProps = {
+  dispatchCheck?: boolean,
+  checkCallback?: any
+}
+
 const connector = connect(
-  (state: RootState) => {
+  (state: RootState, {dispatchCheck, checkCallback}:OwnProps) => {
     const { isLoading, sendSMSCodeRes, bindEmailRes } = state.accountSecurity
     return {
       isLoading,
       sendSMSCodeRes,
-      bindEmailRes
+      bindEmailRes,
+      dispatchCheck,
+      checkCallback
     }
   },
   {
@@ -40,6 +47,8 @@ const fields = keyPathMirror(formInitData)
 function _BindEmail({
   sendSMSCodeRes,
   bindEmailRes,
+  dispatchCheck,
+  checkCallback,
   sendSMSCode,
   bindEmail
 }: Props) {
@@ -74,7 +83,8 @@ function _BindEmail({
   const handleSubmit = async (evt: FormEvent) => {
     // TODO: submit to or do nothing.
     evt.preventDefault()
-    if (!validateFormSync(formData)) return
+    const result = await checkValidate()
+    if (!result) return
     bindEmail({
       params: {
         customerId: 64 // TODO: how to get customerId
@@ -88,6 +98,19 @@ function _BindEmail({
   const handleCutDownClose = () => {
     setOpenCutDown(false)
   }
+
+  const checkValidate = async () => {
+    return new Promise((resovle) => {
+      if (validateFormSync(formData)) {
+        resovle(true)
+        checkCallback && checkCallback(formData)
+      } else {
+        resovle(false)
+        checkCallback && checkCallback(false)
+      }
+    })
+  }
+
   useEffect(() => {
     if (sendSMSCodeRes.data) {
       setOpen(true)
@@ -98,6 +121,13 @@ function _BindEmail({
     }
     // eslint-disable-next-line
   }, [sendSMSCodeRes, bindEmailRes])
+
+  useEffect(() => {
+    if (dispatchCheck) {
+      checkValidate()
+    }
+    // eslint-disable-next-line
+  },[dispatchCheck])
 
   interface Fileld {
     email: object

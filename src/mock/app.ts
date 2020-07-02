@@ -5,8 +5,9 @@ import { createExpressServer } from 'routing-controllers'
 import { MessageListController } from '../components/MessageList/_controller'
 import { MessageDialogController } from '../components/MDialog/MessageDialog/_controller'
 import { ListNotificationController } from '../components/Notification/_controller'
+import { CustomersController } from '../components/MyAddress/_controller'
 
-const controllers = [MessageListController, MessageDialogController, ListNotificationController]
+const controllers = [MessageListController, MessageDialogController, ListNotificationController, CustomersController]
 
 export const app = createExpressServer({
   routePrefix: process.env.REACT_APP_API_BASE_URL,

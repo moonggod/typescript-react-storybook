@@ -13,6 +13,12 @@ export class Customer {
   dob: string = ''
 
   @IsString()
+  firstName: string = ''
+
+  @IsString()
+  lastName: string = ''
+
+  @IsString()
   email: string = ''
 
   @IsInt()

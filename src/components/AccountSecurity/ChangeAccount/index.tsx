@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent, useEffect } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { Box, Button, TextField, } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
@@ -12,12 +12,21 @@ import { I18N, I18N_NS } from '../../_i18n'
 import { ChangeAccountReq } from '../_controller/_types'
 import { useFormValidation } from '../../../utils/formValidation/useFormValidation'
 
+type OwnProps = {
+  initData: ChangeAccountReq,
+  dispatchCheck: boolean,
+  checkCallback: any
+}
+
 const connector = connect(
-  (state: RootState) => {
-    const { isLoading, bindEmailRes } = state.accountSecurity
+  (state: RootState, {initData, dispatchCheck, checkCallback}: OwnProps) => {
+    const { isLoading } = state.accountSecurity
+    console.log('isLoading: ' + isLoading)
     return {
       isLoading,
-      bindEmailRes
+      initData,
+      checkCallback,
+      dispatchCheck
     }
   },
   {
@@ -33,6 +42,10 @@ const formInitData = new ChangeAccountReq()
 const fields = keyPathMirror(formInitData)
 
 function _ChangeAccount({
+  isLoading,
+  initData,
+  dispatchCheck,
+  checkCallback,
   changeAccount
 }: Props) {
   const classes = useStyles()
@@ -41,6 +54,35 @@ function _ChangeAccount({
   const { validateFormSync, getFieldValidationProps } = useFormValidation(
     ChangeAccountReq
   )
+  
+  if (isLoading) {
+    console.log('Do something for loading') // TODO: Do something for loading
+  }
+
+  useEffect(() => {
+    if (initData) {
+      setFormData(initData)
+    }
+  },[initData])
+
+  const checkValidate = async () => {
+    return new Promise((resovle) => {
+      if (validateFormSync(formData)) {
+        resovle(true)
+        checkCallback && checkCallback(formData)
+      } else {
+        resovle(false)
+        checkCallback && checkCallback(false)
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (dispatchCheck) {
+      checkValidate()
+    }
+    // eslint-disable-next-line
+  },[dispatchCheck])
 
   const handleInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
     let value: string
@@ -51,7 +93,8 @@ function _ChangeAccount({
   const handleSubmit = async (evt: FormEvent) => {
     // TODO: submit to or do nothing.
     evt.preventDefault()
-    if (!validateFormSync(formData)) return
+    const result = await checkValidate()
+    if (!result) return
     changeAccount({
       params: {
         customerId: 64 // TODO: how to get customerId
@@ -75,15 +118,15 @@ function _ChangeAccount({
       ...baseAttr,
       className: classes.rowTextField,
       id: fields.firstName,
-      placeholder: t(I18N.account_security.bind_email.pleaseInputEmail),
+      label: t(I18N.account_security.bind_email.pleaseInputEmail),
       value: formData.firstName,
       ...getFieldValidationProps(fields.firstName)
     },
     lastName: {
       ...baseAttr,
-      className: classes.smsBoxTextField,
+      className: classes.rowTextField,
       id: fields.lastName,
-      placeholder: t(I18N._common.ver_code._self),
+      label: t(I18N._common.ver_code._self),
       inputProps: { maxLength: 6 },
       value: formData.lastName,
       ...getFieldValidationProps(fields.lastName)
@@ -95,9 +138,7 @@ function _ChangeAccount({
         <title>{t(I18N.my_profile._self)}</title>
       </Helmet>
       <Box
-        className={classes.mainContainer}
-        display="flex"
-        justifyContent="center">
+        className={classes.mainContainer}>
         <Box width="40%" display="flex" flexDirection="column">
           <form onSubmit={handleSubmit} noValidate>
             <TextField {...formGroup.firstName} />
@@ -120,7 +161,7 @@ function _ChangeAccount({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     mainContainer: {
-      padding: theme.spacing(6, 0, 8)
+      padding: theme.spacing(0)
     },
     captcha: {
       flex: '1',
