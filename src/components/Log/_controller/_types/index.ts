@@ -1,12 +1,15 @@
 import {
+  IsArray,
+  ValidateNested,
   IsNotEmpty,
   IsString,
   IsOptional,
   IsInt,
   IsDate,
 } from 'class-validator'
-// import { IsSameWith } from './IsSameWith'
-export class Template {
+import { Type } from 'class-transformer'
+
+export class Log {
   @IsNotEmpty()
   @IsString()
   designer: string = ''
@@ -36,4 +39,25 @@ export class Template {
 
   @IsInt()
   id: number = 0
+}
+
+export class Customer {
+  @IsInt()
+  customerId!: number
+}
+
+export class GetLogListParams extends Customer {
+}
+
+export class GetLogListQuery {
+  @IsNotEmpty()
+  @IsInt()
+  page: number = 1
+}
+
+export class GetLogListRes {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Log)
+  list: Log[] = []
 }

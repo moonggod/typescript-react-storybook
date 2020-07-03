@@ -68,14 +68,22 @@ export const generateQueryURL = (
 
 /**
  * Add params to path
- * @param path /customers/:customerId/addAddress
+ * @param path /customers/:customerId/getNick?sex=${sex}
  * @param params {customerId:64}
- * @returns /customers/64/addAddress
+ * @param query {sex:male}
+ * @returns /customers/64/getNick?sex=male
  */
-export function addParamsToPath(path: string, params: any) {
+export function addParamsToPath(path: string, params: any, query: any) {
   let _path = path
-  for (const key in params) {
-    _path = _path.replace(`:${key}`, String(params[key]))
+  if (params) {
+    for (const key in params) {
+      _path = _path.replace(`:${key}`, String(params[key]))
+    }
+  }
+  if (query) {
+    for (const key in query) {
+      _path = _path.replace(`{${key}}`, String(query[key]))
+    }
   }
   return _path
 }

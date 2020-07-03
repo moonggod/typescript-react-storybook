@@ -12,7 +12,7 @@ import {MListSlice} from '../components/MessageList/_store/messageListSlice' // 
 import {MDialogSlice} from '../components/MDialog/MessageDialog/_store/messageDialogSlice' // TODO: messageDialogSlice
 import {notificationSlice} from '../components/Notification/_store/notificationSlice' // TODO: notificationSlice
 import {templateSlice} from '../components/Template/_store/templateSlice' // TODO: notificationSlice
-import {shoppingCartSlice} from '../components/ShoppingCart/_store/shoppingCartSlice' // TODO: notificationSlice
+import {logSlice} from '../components/Log/_store/slice' // TODO: notificationSlice
 import axiosMiddleware from 'redux-axios-middleware'
 
 import { accountSecuritySlice } from '../components/AccountSecurity/_store/accountSecuritySlice'
@@ -29,7 +29,7 @@ const rootReducer = combineReducers({
   [MDialogSlice.name]: MDialogSlice.reducer, // TODO:sync MDialogSlice
   [notificationSlice.name]: notificationSlice.reducer, // TODO:sync notificationSlice
   [templateSlice.name]: templateSlice.reducer, // TODO:sync templateSlice
-  [shoppingCartSlice.name]: shoppingCartSlice.reducer, // TODO:sync shoppingCartSlice
+  [logSlice.name]: logSlice.reducer, // TODO:sync shoppingCartSlice
   [myAddressSlice.name]: myAddressSlice.reducer,
   [accountSecuritySlice.name]: accountSecuritySlice.reducer
 })

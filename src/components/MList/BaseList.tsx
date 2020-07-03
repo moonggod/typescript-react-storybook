@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme:Theme) => ({
   }
 }));
 
-type RenderItemsProps = {
+type RenderListProps = {
   [propName: string]: any
 }
 
@@ -31,7 +31,7 @@ type itemTypes = {
   price: number,
 }
 
-function RenderItems(props:RenderItemsProps) {
+function RenderList(props:RenderListProps) {
   const classes = useStyles()
   const [checked, setChecked] = useState([-1])
 
@@ -47,29 +47,36 @@ function RenderItems(props:RenderItemsProps) {
 
     setChecked(newChecked)
   }
-  return props.listData.map((item:itemTypes) => {
-    return (
-      <ListItem button key={item.id}>
-        <ListItemIcon>
-          <Checkbox
-            edge="end"
-            onChange={handleToggle(item.id)}
-            checked={checked.indexOf(item.id) !== -1}
-          />
-        </ListItemIcon>
-        <ListItemIcon>
-          <img className={classes.img} src={require("./icon.png")} alt=""/>
-        </ListItemIcon>
-        <ListItemText className={classes.info} primary={<h5 className={classes.title}>{item.title}</h5>} secondary={<span>{item.desc}</span>} />
-        <ListItemText className={classes.price} primary={<b>${item.price}</b>} />
-        <ListItemSecondaryAction>
-        <Button variant="contained" color="primary" size="small">
-          Buy it
-        </Button>
-        </ListItemSecondaryAction>
-      </ListItem>
-    )
-  })
+  return (
+    <List>
+      <ListSubheader>Shop Cart</ListSubheader>
+      {
+        props.listData.map((item:itemTypes) => {
+          return (
+            <ListItem button key={item.id}>
+              <ListItemIcon>
+                <Checkbox
+                  edge="end"
+                  onChange={handleToggle(item.id)}
+                  checked={checked.indexOf(item.id) !== -1}
+                />
+              </ListItemIcon>
+              <ListItemIcon>
+                <img className={classes.img} src={require("./icon.png")} alt=""/>
+              </ListItemIcon>
+              <ListItemText className={classes.info} primary={<h5 className={classes.title}>{item.title}</h5>} secondary={<span>{item.desc}</span>} />
+              <ListItemText className={classes.price} primary={<b>${item.price}</b>} />
+              <ListItemSecondaryAction>
+              <Button variant="contained" color="primary" size="small">
+                Buy it
+              </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          )
+        })
+      }
+    </List>
+  )
 }
 
 export const BaseList: FunctionComponent = () => {
@@ -89,10 +96,7 @@ export const BaseList: FunctionComponent = () => {
   }
   return (
     <Box>
-      <List>
-        <ListSubheader>Shop Cart</ListSubheader>
-        <RenderItems listData={listData}/>
-      </List>
+      <RenderList listData={listData}/>
       <Pagination count={10} variant="outlined" shape="rounded" onChange={handleSwitch} />
     </Box>
   )
