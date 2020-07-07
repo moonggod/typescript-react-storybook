@@ -11,19 +11,20 @@ export const CATEGORY_ORDER = ['normal']
 export function adaptList(list: [NotificationItem], showNumber: number) {
     let categoryList:any = {}
     const languages = i18next.languages
-    let _count = 0
+    let _count = 1
     let categoryOrder:any = []
+    const category = CATEGORY_ORDER[0]
     list.forEach(item => {
         if (_count > showNumber) return
         const _item = JSON.parse(JSON.stringify(item))
         _item._title = languages[0] === 'en' ? _item.title.en : _item.title.zh
         _item._content = languages[0] === 'en' ? _item.content.en : _item.content.zh
-        if (!categoryList[_item.category]) {
-            categoryOrder.push(_item.category)
-            categoryList[_item.category] = [_item]
+        if (!categoryList[category]) {
+            categoryOrder.push(category)
+            categoryList[category] = [_item]
             _count += 1
         } else {
-            categoryList[_item.category].push(_item)
+            categoryList[category].push(_item)
             _count += 1
         }
     })

@@ -1,62 +1,97 @@
 import React, {useState, useEffect, Fragment} from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Box, ListItem, IconButton, ListItemText } from '@material-ui/core'
+import { Box, ListItem, IconButton, ListItemText, ListItemAvatar, Avatar, ListItemSecondaryAction } from '@material-ui/core'
 import { NotificationItem } from '../_controller/_types'
 import { RootState } from '../../../app/store'
 import { deleteNotification, markReadNotification } from '../_store/notificationSlice'
-import {DeleteOutline} from '@material-ui/icons'
 import {getElapsedTime, switchHelper} from '../_helper'
 import { useTranslation } from 'react-i18next'
 import { I18N, I18N_NS } from '../_i18n'
-
+import { ErrorOutline, Clear } from '@material-ui/icons'
+import {ReactComponent as CheckSvg} from '../../../assets/svgs/checked.svg'
+import {ReactComponent as GClubSvg} from '../../../assets/svgs/gclub.svg'
+import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon'
 
 const useStyles = makeStyles((theme:Theme) => ({
   listItem: {
     padding: theme.spacing(0, 1.5),
-    margin: theme.spacing(0),
+    marginBottom: theme.spacing(2),
     color: '#5b6271',
-    fontSize: '16px'
+    fontSize: '16px',
+    backgroundColor: '#F2F2F2',
+    borderRadius: '5px'
+  },
+  avatar: {
+    alignItems: 'end',
+    marginTop: theme.spacing(1),
+    '& .MuiAvatar-root': {
+      backgroundColor: 'transparent',
+      borderRadius: 0,
+      '& .MuiSvgIcon-root': {
+        width: '100%',
+        height: '100%',
+      }
+    }
   },
   title: {
-    padding: theme.spacing(0),
+    paddingTop: theme.spacing(0.5),
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
+    fontSize: '12px'
   },
   time: {
-    padding: theme.spacing(0.5, 1),
+    padding: theme.spacing(0.5, 0),
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     fontSize: '12px',
-    color: '#5b6271',
+    color: '#868686',
     minWidth: '90px',
   },
   fontWeight: {
-    fontWeight: 700
+    fontWeight: 400
   },
-  dotted:{
-    width: '8px',
-    height: '8px',
-    backgroundColor:'#e2a329',
-    display: 'inline-block',
+  clearBtn:{
+    padding: theme.spacing(.5),
+    backgroundColor: '#c8c8c8',
     borderRadius: '50%',
-    marginRight: theme.spacing(1.5),
-    verticalAlign: 'top',
-    marginTop: theme.spacing(0.9),
+    marginRight: theme.spacing(0),
+    '& .MuiSvgIcon-root': {
+      fontSize: '.8rem'
+    }
   },
-  deleteBtn:{
-    padding: theme.spacing(1),
-    marginTop: theme.spacing(-0.5),
-    marginLeft: theme.spacing(1),
+  itemText: {
+    marginRight: theme.spacing(4)
   },
   content: {
-    padding: theme.spacing(0, 1, 0, 2.5),
-    fontSize: '14px',
-    color: '#999'
+    padding: theme.spacing(0),
+    fontSize: '16px',
+    color: '#000000'
+  },
+  red: {
+    color: '#D50101',
+  },
+  blue: {
+    color: '#006FCF'
   }
 }));
+
+function CheckedIcon(props: SvgIconProps) {
+  return (
+    <SvgIcon {...props}>
+      <CheckSvg/>
+    </SvgIcon>
+  )
+}
+function GClubIcon(props: SvgIconProps) {
+  return (
+    <SvgIcon {...props}>
+      <GClubSvg/>
+    </SvgIcon>
+  )
+}
 
 const connector = connect(
   (state: RootState, props: {item: NotificationItem}) => {
@@ -79,29 +114,20 @@ export const ItemRender = connector(_ItemRender)
 export function _ItemRender({
   deleteResult,
   item,
-  deleteNotification,
   markReadNotification
 }: Props) {
   const { t } = useTranslation(I18N_NS)
   const classes = useStyles()
   const [firstOpen, setFirstOpen] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
-  const [open, setOpen] = useState(false)
   const [elapsedTime, setElapsedTime] = useState({
     result: 0,
     unit: ''
   })
-  function deleteMe (event:any) {
+  function markMe (event:any) {
     event.preventDefault()
-    deleteNotification({id: item.id})
-  }
-  function toggleOpen (event:any) {
-    if(event.target.nodeName === 'svg') return
-    if (!firstOpen) {
-      markReadNotification({id: item.id})
-      setFirstOpen(true)
-    }
-    setOpen(!open)
+    markReadNotification({id: item.id})
+    setFirstOpen(true)
   }
   useEffect(() => {
     if (deleteResult.id === item.id) {
@@ -109,34 +135,53 @@ export function _ItemRender({
     }
     setElapsedTime(getElapsedTime(item.timeSent))
   }, [deleteResult, item])
+
+  const getColor = (category:string) => {
+    if (/warning/.test(category)) {
+      return classes.red
+    } else {
+      return classes.blue
+    }
+  }
+  const getIcon = (category:string) => {
+    if (/warning/.test(category)) {
+      return <ErrorOutline className={getColor(category)} />
+    } else if (/checked/.test(category)) {
+      return <CheckedIcon className={getColor(category)} />
+    } else {
+      return <GClubIcon className={getColor(category)} />
+    }
+  }
   return (
-    <Box>
+    <Fragment>
     {
       !isDeleted ? (
         <ListItem className={classes.listItem} key={item.id}>
+          <ListItemAvatar className={classes.avatar}>
+            <Avatar>
+              {getIcon(item.category)}
+            </Avatar>
+          </ListItemAvatar>
           <ListItemText
+          className={classes.itemText}
           secondary={
             <Fragment>
-              {
-                open ? <Box className={classes.content}>{item._content}</Box> : null
-              }
+              <Box className={classes.content}>{item._content}</Box>
+              <Box className={classes.time + (!firstOpen ? (' ' + classes.fontWeight) : '')}>{elapsedTime.result}{t(switchHelper(I18N.notification, elapsedTime.unit))}</Box>
             </Fragment>
           }>
-            <Box display="flex" width="100%" onClick={toggleOpen}>
-              <Box flexGrow={1} className={classes.title + (!firstOpen ? (' ' + classes.fontWeight) : '')}>
-                <Box className={classes.dotted}/>{item._title}
-              </Box>
-              <Box className={classes.time + (!firstOpen ? (' ' + classes.fontWeight) : '')}>{elapsedTime.result}{t(switchHelper(I18N.notification, elapsedTime.unit))}</Box>
-              <Box>
-                <IconButton className={classes.deleteBtn} aria-label="delete" color="primary" onClick={deleteMe}>
-                  <DeleteOutline fontSize="small" />
-                </IconButton>
-              </Box>
+            <Box flexGrow={1} className={classes.title + ' ' + getColor(item.category) + (!firstOpen ? (' ' + classes.fontWeight) : '')}>
+              {item._title}
             </Box>
           </ListItemText>
+          <ListItemSecondaryAction>
+            <IconButton className={classes.clearBtn} edge="end" aria-label="delete" onClick={markMe}>
+              <Clear />
+            </IconButton>
+          </ListItemSecondaryAction>
         </ListItem>
       ) : null
     }
-    </Box>
+    </Fragment>
   )
 }

@@ -13,6 +13,7 @@ export const _spec = {
     hours_ago: '',
     minutes_ago: '',
     seconds_ago: '',
+    mark_all_as_read: '',
   },
   /** TODO:sync NotificationList # */
 }

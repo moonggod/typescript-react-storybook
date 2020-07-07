@@ -15,6 +15,7 @@ export const zh: typeof _spec = {
     hours_ago: '小时前',
     minutes_ago: '分钟前',
     seconds_ago: '秒前',
+    mark_all_as_read: '全部标识已读',
   },
   /** TODO:sync NotificationList # */
 }

@@ -15,6 +15,7 @@ export const en: typeof _spec = {
     hours_ago: ' hour ago',
     minutes_ago: ' min ago',
     seconds_ago: ' sec ago',
+    mark_all_as_read: 'Mark all as read',
   },
   /** TODO:sync NotificationList # */
 }
