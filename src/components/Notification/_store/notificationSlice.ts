@@ -8,10 +8,9 @@ import {
   MarkReadNotificationRes,
   NotificationItem
 } from '../_controller/_types'
-import { api } from '../../../utils/api'
-import { getLang } from '../../../i18n/utils'
+import { api } from '../../../utils/rest-api'
 
-const SLICE_NAME = 'notificationSlice'
+const SLICE_NAME = 'notification'
 
 export const getListNotification = createAsyncThunk(
   `${SLICE_NAME}/getListNotification`,
@@ -21,8 +20,7 @@ export const getListNotification = createAsyncThunk(
       method: 'get',
       url: `/message/v1/receive?limit=${query.limit}&secondsAgo=${query.secondsAgo}`,
       headers: {
-        'Authorization': `SID=937eaoWFf17BTMSE4x3kl0CkfV6q7mmzQLdpsqOCVp0`, // TODO: need true token
-        'lang': getLang()
+        'lang': 'en' // TODO: need true lang
       },
     })
     return data
@@ -36,11 +34,7 @@ export const deleteNotification = createAsyncThunk(
       method: 'delete',
       url: `/message/v1/delete`,
       data: query,
-      headers: {
-        // 'Authorization': `123`
-      },
     })
-    data.id = query.id // TODO: mock delete, need to delete
     return data
   }
 )
@@ -52,9 +46,6 @@ export const markReadNotification = createAsyncThunk(
       method: 'post',
       url: `/message/v1/markRead`,
       data: query,
-      headers: {
-        // 'Authorization': `123`
-      },
     })
     return data
   }

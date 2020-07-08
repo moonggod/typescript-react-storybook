@@ -95,7 +95,7 @@ function GClubIcon(props: SvgIconProps) {
 
 const connector = connect(
   (state: RootState, props: {item: NotificationItem}) => {
-    const { deleteResult } = state.notificationSlice
+    const { deleteResult } = state.notification
     return {
       deleteResult,
       item: props.item

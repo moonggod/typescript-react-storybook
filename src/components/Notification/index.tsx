@@ -9,11 +9,12 @@ import { useTranslation } from 'react-i18next'
 import { I18N, I18N_NS } from './_i18n'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { adaptList, switchHelper } from './_helper'
+import { getLoginInfo } from '../../_cache_stores/login'
 
 const useStyles = makeStyles((theme:Theme) => ({
   popWindow: {
     padding: theme.spacing(0),
-    width: '600px'
+    width: '540px'
   },
   setAllRead: {
     position: 'absolute',
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme:Theme) => ({
 
 const connector = connect(
   (state: RootState, props: {setTotal?: any}) => {
-    const { isLoading, listNotification, total, unreadTotal } = state.notificationSlice
+    const { isLoading, listNotification, total, unreadTotal } = state.notification
     return {
       isLoading,
       listNotification,
@@ -88,6 +89,7 @@ export function _Notification({
   setTotal,
   getListNotification
 }: Props) {
+  const login = getLoginInfo()
   const classes = useStyles()
   // const curCustomerId = 777 // TODO: where to get the current customer ID?
   const { t } = useTranslation(I18N_NS)
@@ -95,22 +97,22 @@ export function _Notification({
   const [showNumber, setShowNumber] = useState(5)
   
   useEffect(() => {
-    getListNotification({limit:10, secondsAgo: 90000000})
-  }, [getListNotification])
+    if (login?.member?.id) {
+      getListNotification({ limit: 10, secondsAgo: 90000000 })
+    }
+  }, [getListNotification, login])
 
   useEffect(() => {
-    if (listNotification.length) {
+    if (listNotification && listNotification.length) {
       setMyList(adaptList(listNotification, showNumber))
     }
   }, [listNotification, showNumber])
 
   useEffect(() => {
-    setTotal(unreadTotal)
-  }, [setTotal, unreadTotal])
-
-  if (isLoading) {
-    return null // TODO: show global loading (e.g. https://github.com/rstacruz/nprogress) or local loading?
-  }
+    if (!isLoading && login?.member?.id) {
+      setTotal(unreadTotal)
+    }
+  }, [setTotal, unreadTotal, login, isLoading])
   const toggleShow = () => { // TODO: need to send real params
     setShowNumber(showNumber === 5 ? 99 : 5)
   }
