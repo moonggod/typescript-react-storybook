@@ -5,7 +5,7 @@ import { BaseList } from '../components/MList/BaseList'
 import { CardList } from '../components/MList/CardList'
 import { MessageList } from '../components/MessageList'
 import { NotificationWithButton } from '../components/Notification/indexWithButton'
-import { Log } from '../components/Log'
+import { Log } from '../pages/Log'
 
 export default {
   title: 'MList'

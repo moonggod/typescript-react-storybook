@@ -6,7 +6,7 @@ import { MessageListController } from '../components/MessageList/_controller'
 import { MessageDialogController } from '../components/MDialog/MessageDialog/_controller'
 import { ListNotificationController } from '../components/Notification/_controller'
 import { CustomersController } from '../components/MyAddress/_controller'
-import { LogListController } from '../components/Log/_controller'
+import { LogListController } from '../pages/Log/_controller'
 
 const controllers = [MessageListController, MessageDialogController, ListNotificationController, CustomersController, LogListController]
 

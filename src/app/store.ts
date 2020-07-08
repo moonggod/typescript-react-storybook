@@ -12,7 +12,7 @@ import {MListSlice} from '../components/MessageList/_store/messageListSlice' // 
 import {MDialogSlice} from '../components/MDialog/MessageDialog/_store/messageDialogSlice' // TODO: messageDialogSlice
 import {notificationSlice} from '../components/Notification/_store/notificationSlice' // TODO: notificationSlice
 import {templateSlice} from '../components/Template/_store/templateSlice' // TODO: notificationSlice
-import {logSlice} from '../components/Log/_store/slice' // TODO: notificationSlice
+import {logSlice} from '../pages/Log/_store/slice' // TODO: notificationSlice
 import axiosMiddleware from 'redux-axios-middleware'
 
 import { accountSecuritySlice } from '../components/AccountSecurity/_store/accountSecuritySlice'

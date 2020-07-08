@@ -1,9 +1,7 @@
 export const getLoginInfo = () => {
   return {
-    login: {
-      member:{
-        id: 77
-      }
+    member:{
+      id: 77
     }
   }
 }
