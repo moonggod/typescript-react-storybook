@@ -19,4 +19,4 @@ export const _MessageList = () => <Provider><MessageList/></Provider>
 
 export const _ListNotification = () => <Provider><Box style={{ display: 'flex', justifyContent: 'center', paddingTop: '30px' }}><NotificationWithButton/></Box></Provider>
 
-export const _Log = () => <Provider><Log customerId={7749}/></Provider>
+export const _Log = () => <Provider><Log /></Provider>

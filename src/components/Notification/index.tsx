@@ -90,6 +90,7 @@ export function _Notification({
   getListNotification
 }: Props) {
   const login = getLoginInfo()
+  const customerId = login?.member?.id
   const classes = useStyles()
   // const curCustomerId = 777 // TODO: where to get the current customer ID?
   const { t } = useTranslation(I18N_NS)
@@ -97,10 +98,10 @@ export function _Notification({
   const [showNumber, setShowNumber] = useState(5)
   
   useEffect(() => {
-    if (login?.member?.id) {
+    if (customerId) {
       getListNotification({ limit: 10, secondsAgo: 90000000 })
     }
-  }, [getListNotification, login])
+  }, [getListNotification, customerId])
 
   useEffect(() => {
     if (listNotification && listNotification.length) {
