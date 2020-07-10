@@ -9,6 +9,7 @@ import {
   NotificationItem
 } from '../_controller/_types'
 import { api } from '../../../utils/rest-api'
+import { getListWithoutDeleted } from '../_helper'
 
 const SLICE_NAME = 'notification'
 
@@ -35,6 +36,7 @@ export const deleteNotification = createAsyncThunk(
       url: `/message/v1/delete`,
       data: query,
     })
+    data.id = query.id
     return data
   }
 )
@@ -80,8 +82,6 @@ const markReadResult:MarkReadNotificationRes = {
   status: '',
 }
 
-const readIdStr:string = ''
-
 export const notificationSlice = createSlice({
   name: SLICE_NAME,
   initialState: {
@@ -93,7 +93,6 @@ export const notificationSlice = createSlice({
     markReadResult,
     unreadTotal: 0,
     total:0,
-    readIdStr
   },
   reducers: {
   },
@@ -117,10 +116,8 @@ export const notificationSlice = createSlice({
     },
     [deleteNotification.fulfilled.type]: (state, action) => {
       state.deleteResult = action.payload
+      state.listNotification = getListWithoutDeleted(state.listNotification, action.payload.id)
       state.deleteLoading = false
-      if (state.readIdStr.indexOf(`,${state.deleteResult.id}`) !== -1) {
-        state.unreadTotal -= 1
-      }
       state.total -= 1
     },
     [deleteNotification.rejected.type]: state => {
@@ -133,7 +130,6 @@ export const notificationSlice = createSlice({
     [markReadNotification.fulfilled.type]: (state, action) => {
       state.markReadResult = action.payload
       state.markReadLoaing = false
-      state.readIdStr = `${state.readIdStr},${state.markReadResult.id}`
       state.unreadTotal -= 1
     },
     [markReadNotification.rejected.type]: state => {

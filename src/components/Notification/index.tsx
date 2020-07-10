@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, MouseEvent } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { Box, List, Button, Typography } from '@material-ui/core'
 import { getListNotification, deleteNotification, markReadNotification } from './_store/notificationSlice'
@@ -92,11 +92,14 @@ export function _Notification({
   const login = getLoginInfo()
   const customerId = login?.member?.id
   const classes = useStyles()
-  // const curCustomerId = 777 // TODO: where to get the current customer ID?
   const { t } = useTranslation(I18N_NS)
   const [myList, setMyList] = useState({categoryOrder:[],categoryList: {}})
   const [showNumber, setShowNumber] = useState(5)
-  
+  const [markNow, setMarkNow] = useState(false)
+  const handleMarkAll = (event:MouseEvent) => {
+    event.preventDefault()
+    setMarkNow(true)
+  }
   useEffect(() => {
     if (customerId) {
       getListNotification({ limit: 10, secondsAgo: 90000000 })
@@ -114,7 +117,7 @@ export function _Notification({
       setTotal(unreadTotal)
     }
   }, [setTotal, unreadTotal, login, isLoading])
-  const toggleShow = () => { // TODO: need to send real params
+  const toggleShow = () => {
     setShowNumber(showNumber === 5 ? 99 : 5)
   }
   return (
@@ -125,6 +128,7 @@ export function _Notification({
         </Typography>
         <Button
           className={classes.setAllRead}
+          onClick={handleMarkAll}
           variant="text">
             {t(I18N.notification.mark_all_as_read)}
         </Button>
@@ -147,7 +151,7 @@ export function _Notification({
                       _list.map((item:NotificationItem) => {
 
                         return (
-                          <ItemRender item={item} key={item.id} />
+                          <ItemRender item={item} key={item.id} markNow={markNow} />
                         )
                       })
                     }

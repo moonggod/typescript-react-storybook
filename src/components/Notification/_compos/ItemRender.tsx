@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, ListItem, IconButton, ListItemText, ListItemAvatar, Avatar, ListItemSecondaryAction } from '@material-ui/core'
 import { NotificationItem } from '../_controller/_types'
-import { RootState } from '../../../app/store'
+// import { RootState } from '../../../app/store'
 import { deleteNotification, markReadNotification } from '../_store/notificationSlice'
 import {getElapsedTime, switchHelper} from '../_helper'
 import { useTranslation } from 'react-i18next'
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme:Theme) => ({
     minWidth: '90px',
   },
   fontWeight: {
-    fontWeight: 400
+    fontWeight: 700
   },
   clearBtn:{
     padding: theme.spacing(.5),
@@ -94,11 +94,11 @@ function GClubIcon(props: SvgIconProps) {
 }
 
 const connector = connect(
-  (state: RootState, props: {item: NotificationItem}) => {
-    const { deleteResult } = state.notification
+  (state: never, props: {item: NotificationItem, markNow: boolean}) => {
+    if (state) return // TODO: Fix: "State" has been declared, but its value has never been read 
     return {
-      deleteResult,
-      item: props.item
+      item: props.item,
+      markNow: props.markNow
     }
   },
   { 
@@ -112,29 +112,37 @@ export type Props = ConnectedProps<typeof connector>
 export const ItemRender = connector(_ItemRender)
 
 export function _ItemRender({
-  deleteResult,
   item,
+  markNow,
+  deleteNotification,
   markReadNotification
 }: Props) {
   const { t } = useTranslation(I18N_NS)
   const classes = useStyles()
-  const [firstOpen, setFirstOpen] = useState(false)
-  const [isDeleted, setIsDeleted] = useState(false)
+  const [isRead, setIsRead] = useState(false)
+  const timeSent = item.timeSent
   const [elapsedTime, setElapsedTime] = useState({
     result: 0,
     unit: ''
   })
-  function markMe (event:any) {
-    event.preventDefault()
+  
+  function markMe (event?:any) {
+    event && event.preventDefault()
+    if(isRead) return
     markReadNotification({id: item.id})
-    setFirstOpen(true)
+    setIsRead(true)
+  }
+  function deleteMe (event?:any) {
+    event && event.preventDefault()
+    markMe()
+    deleteNotification({id: item.id})
+  }
+  if (markNow) {
+    markMe()
   }
   useEffect(() => {
-    if (deleteResult.id === item.id) {
-      setIsDeleted(true)
-    }
-    setElapsedTime(getElapsedTime(item.timeSent))
-  }, [deleteResult, item])
+    setElapsedTime(getElapsedTime(timeSent))
+  }, [timeSent])
 
   const getColor = (category:string) => {
     if (/warning/.test(category)) {
@@ -154,9 +162,7 @@ export function _ItemRender({
   }
   return (
     <Fragment>
-    {
-      !isDeleted ? (
-        <ListItem className={classes.listItem} key={item.id}>
+        <ListItem className={classes.listItem} key={item.id} onClick={markMe}>
           <ListItemAvatar className={classes.avatar}>
             <Avatar>
               {getIcon(item.category)}
@@ -166,22 +172,20 @@ export function _ItemRender({
           className={classes.itemText}
           secondary={
             <Fragment>
-              <Box className={classes.content}>{item._content}</Box>
-              <Box className={classes.time + (!firstOpen ? (' ' + classes.fontWeight) : '')}>{elapsedTime.result}{t(switchHelper(I18N.notification, elapsedTime.unit))}</Box>
+              <Box className={classes.content + (!isRead ? (' ' + classes.fontWeight) : '')}>{item._content}</Box>
+              <Box className={classes.time + (!isRead ? (' ' + classes.fontWeight) : '')}>{elapsedTime.result}{t(switchHelper(I18N.notification, elapsedTime.unit))}</Box>
             </Fragment>
           }>
-            <Box flexGrow={1} className={classes.title + ' ' + getColor(item.category) + (!firstOpen ? (' ' + classes.fontWeight) : '')}>
+            <Box flexGrow={1} className={classes.title + ' ' + getColor(item.category) + (!isRead ? (' ' + classes.fontWeight) : '')}>
               {item._title}
             </Box>
           </ListItemText>
           <ListItemSecondaryAction>
-            <IconButton className={classes.clearBtn} edge="end" aria-label="delete" onClick={markMe}>
+            <IconButton className={classes.clearBtn} edge="end" aria-label="delete" onClick={deleteMe}>
               <Clear />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
-      ) : null
-    }
     </Fragment>
   )
 }

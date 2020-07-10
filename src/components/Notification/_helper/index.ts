@@ -17,8 +17,8 @@ export function adaptList(list: [NotificationItem], showNumber: number) {
     list.forEach(item => {
         if (_count > showNumber) return
         const _item = JSON.parse(JSON.stringify(item))
-        _item._title = languages[0] === 'en' ? _item.title.en : _item.title.zh
-        _item._content = languages[0] === 'en' ? _item.content.en : _item.content.zh
+        _item._title = languages[0] === 'en' ? _item.title.en : (_item.title.zh || _item.title.en)
+        _item._content = languages[0] === 'en' ? _item.content.en : (_item.content.zh || _item.content.en)
         if (!categoryList[category]) {
             categoryOrder.push(category)
             categoryList[category] = [_item]
@@ -66,4 +66,19 @@ export function getElapsedTime(time:number) {
         result: days || hours || minutes || seconds,
         unit: unit
     }
+}
+/**
+ * 移除‘已删除’的元素
+ * @param list
+ * @param deletedId 
+ */
+export function getListWithoutDeleted(list:any, deletedId: string) {
+    const _list = JSON.parse(JSON.stringify(list))
+    for (let i = 0; i < _list.length; i++) {
+        if (_list[i].id === deletedId) {
+            _list.splice(i,1)
+            break
+        }
+    }
+    return _list
 }
